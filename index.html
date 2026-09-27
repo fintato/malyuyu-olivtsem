@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Малюю олівцем">
+<meta name="theme-color" content="#8CBEFC">
+<title>Малюю олівцем</title>
+<style>
+:root{
+  --bg:#8CBEFC; --ink:#1d2b45; --muted:#56657f; --paper:#fffdf7; --card:#ffffff;
+  --accent:#ff7a45; --accent-d:#e0602c; --sun:#ffd54a; --now:#e8503a;
+  --soft:#e9f2ff; --radius:22px; --shadow:0 5px 0 rgba(29,43,69,.12);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:ui-rounded,"SF Pro Rounded","Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+  font-size:18px; line-height:1.45; -webkit-text-size-adjust:100%; min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{line-height:1.2}
+
+/* ---------- шапка ---------- */
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
+  background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.brand{font-weight:800;font-size:22px;display:flex;align-items:center;gap:8px;margin-right:auto}
+.brand .pen{display:inline-block;transform:rotate(-30deg)}
+.nav{display:flex;gap:6px}
+.nav a{padding:8px 14px;border-radius:14px;font-weight:700;font-size:16px}
+.nav a.on{background:var(--card);box-shadow:0 2px 0 rgba(0,0,0,.08)}
+
+/* ---------- головна ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
+.hello{background:var(--card);border-radius:var(--radius);padding:18px 22px;display:flex;gap:18px;align-items:center;box-shadow:var(--shadow)}
+.hello .big{font-size:52px}
+.hello h1{margin:0 0 4px;font-size:26px}
+.hello p{margin:0;color:var(--muted)}
+.section h2{font-size:23px;margin:30px 4px 12px;display:flex;align-items:center;gap:10px}
+.section .sub{font-size:15px;font-weight:600;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.card{background:var(--card);border-radius:var(--radius);padding:10px 10px 12px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow);transition:transform .12s}
+a.card:active{transform:translateY(3px)}
+.thumb{background:var(--paper);border-radius:14px;aspect-ratio:1/1;overflow:hidden;display:grid;place-items:center;border:1px solid #eee6d3}
+.thumb svg{width:100%;height:100%;display:block}
+.card .name{font-weight:800;font-size:18px;padding:0 4px}
+.card .meta{font-size:14px;color:var(--muted);padding:0 4px}
+.stars{color:#f0a400;letter-spacing:1px}
+.card.soon{opacity:.72}
+.card.soon .thumb{font-size:60px}
+.pill{display:inline-block;font-size:13px;font-weight:700;background:var(--soft);border-radius:99px;padding:2px 10px}
+
+/* ---------- урок ---------- */
+.lesson{max-width:1300px;margin:0 auto;padding:14px 16px 36px;display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px) and (orientation:landscape){
+  .lesson{grid-template-columns:minmax(0,1fr) 410px;align-items:start}
+  .panel{position:sticky;top:78px}
+}
+.lhead{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.back{background:var(--card);border-radius:14px;padding:9px 14px;font-weight:800;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+.ltitle{font-size:27px;font-weight:800;margin:0 auto 0 6px}
+.styles{display:flex;background:rgba(255,255,255,.55);border-radius:16px;padding:4px;gap:4px}
+.styles button{padding:9px 14px;border-radius:12px;font-weight:800;font-size:16px}
+.styles button.on{background:var(--card);box-shadow:0 2px 0 rgba(0,0,0,.1)}
+.cmp{background:var(--card);border-radius:14px;padding:9px 14px;font-weight:800;font-size:16px;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+.stage{background:var(--paper);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);display:flex;justify-content:center;position:relative}
+.stage svg{height:min(74vh,920px);width:auto;max-width:100%;display:block}
+@media (orientation:portrait){ .stage svg{height:54vh} }
+.a4tag{position:absolute;left:16px;top:12px;font-size:13px;font-weight:700;color:#a49a82}
+.panel{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.styleinfo{font-size:15px;color:var(--muted);background:var(--soft);border-radius:14px;padding:8px 12px}
+.need{font-size:15px;color:var(--muted)}
+.stepno{font-weight:800;color:var(--accent-d);font-size:17px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border-radius:99px;padding:5px 12px;font-weight:800;font-size:15px;display:inline-flex;gap:6px;align-items:center;background:#eef1f5}
+.chip.B2{background:#4b5160;color:#fff}
+.chip.kl{background:#ffd9e4}
+.press i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#cfd6e2}
+.press i.on{background:var(--ink)}
+.stext{font-size:20px;line-height:1.5;margin:0}
+.tip{background:#fff5d1;border-radius:14px;padding:10px 14px;font-size:16px}
+.legend{font-size:14px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap}
+.legend b{font-weight:800}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{min-height:54px;border-radius:16px;font-weight:800;font-size:18px;background:var(--soft);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 14px;text-align:center}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 0 var(--accent-d)}
+.btn.primary:active{transform:translateY(2px);box-shadow:0 2px 0 var(--accent-d)}
+.btn:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.dots button{width:16px;height:16px;border-radius:50%;background:#d7e2f3}
+.dots button.seen{background:#9ec4ff}
+.dots button.on{background:var(--accent);transform:scale(1.2)}
+
+/* ---------- малюнок ---------- */
+.art .step *{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.art .g{stroke:#b8b8b8;stroke-width:1.5}
+.art .l{stroke:#909090;stroke-width:2.3}
+.art .k{stroke-width:3.2}
+.art .x{stroke-width:5}
+.art .fd{fill:#8a8a8a;stroke:none}
+.art .fw{fill:#fffdf7;stroke:none}
+.art .s1{fill:url(#h1);stroke:none}
+.art .s2{fill:url(#h2);stroke:none}
+.art .s3{fill:url(#h3);stroke:none}
+.art .s4{fill:url(#h4);stroke:none}
+.art .grd{fill:url(#toneGrad);stroke:none}
+.art .rf{stroke:#fffdf7;stroke-width:14;stroke-opacity:.6}
+.art.inked .l{stroke:#2f2f2f}
+.art.inked .fd{fill:#333}
+.art .now .l,.art .now .g{stroke:var(--now)}
+.art .now .fd{fill:var(--now)}
+.art.erased .g{display:none}
+.art .lbls path{fill:none;stroke:#3d6fd1;stroke-width:1.3;stroke-dasharray:4 4}
+.art .lbls text{fill:#2c55a8;font-size:17px;font-weight:700;font-family:ui-rounded,"SF Pro Rounded",system-ui,sans-serif}
+.art .lbls text.sm{font-size:13px;fill:#6a7690}
+
+/* ---------- модальне вікно ---------- */
+.modal{position:fixed;inset:0;background:rgba(20,35,60,.45);display:grid;place-items:center;padding:16px;z-index:20}
+.modal[hidden]{display:none}
+.mbox{background:var(--card);border-radius:24px;padding:22px;max-width:960px;width:100%;max-height:92vh;overflow:auto;position:relative}
+.mbox.narrow{max-width:520px;text-align:center}
+.mbox h2{margin:4px 0 10px}
+.mbox .big{font-size:64px}
+.close{position:absolute;right:12px;top:10px;font-size:26px;width:44px;height:44px;border-radius:50%;background:var(--soft)}
+.cmpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.cmpgrid button{background:var(--paper);border-radius:16px;padding:8px;border:2px solid #eee6d3;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800}
+.cmpgrid svg{width:100%;height:auto}
+.cmpgrid small{font-weight:600;color:var(--muted);font-size:13px;text-align:left}
+@media (max-width:640px){.cmpgrid{grid-template-columns:1fr}}
+
+/* ---------- галерея ---------- */
+.gtools{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.gtools select{font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:2px solid var(--soft);background:#fff;max-width:100%}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}
+.ph{background:var(--card);border-radius:18px;padding:8px;box-shadow:var(--shadow);text-align:left}
+.ph img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block;background:#eee}
+.ph .cap{font-size:14px;padding:6px 4px 2px;font-weight:700}
+.ph .dt{font-size:13px;color:var(--muted);padding:0 4px}
+.empty{background:rgba(255,255,255,.7);border-radius:var(--radius);padding:30px;text-align:center;color:var(--muted);margin-top:16px}
+.bigimg{width:100%;max-height:70vh;object-fit:contain;border-radius:12px;background:#f3f3f3}
+
+/* ---------- налаштування ---------- */
+.box{background:var(--card);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);margin-top:16px}
+.box h2{margin:0 0 8px;font-size:21px}
+.box p{margin:6px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.row .btn{flex:1 1 200px}
+label.chk{display:flex;gap:12px;align-items:center;font-weight:700;padding:6px 0}
+label.chk input{width:26px;height:26px}
+.note{font-size:15px;color:var(--muted)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;z-index:30;max-width:90vw;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="pen">✏️</span> Малюю олівцем</div>
+  <nav class="nav">
+    <a href="#/" data-nav="">Уроки</a>
+    <a href="#/gallery" data-nav="gallery">Мої роботи</a>
+    <a href="#/settings" data-nav="settings" aria-label="Налаштування">⚙️</a>
+  </nav>
+</header>
+<main id="app"></main>
+<div id="modal" class="modal" hidden></div>
+<div id="toast" class="toast"></div>
+<input type="file" id="photoInput" accept="image/*" hidden>
+<input type="file" id="importInput" accept="application/json,.json" hidden>
+
+<script>
+'use strict';
+/* =====================================================================
+   Пам'ять браузера: прогрес і налаштування — localStorage,
+   фото робіт — IndexedDB. Усе обгорнуто в try/catch: якщо браузер
+   не дає зберігати, сайт усе одно працює, просто нічого не пам'ятає.
+   ===================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const store = {
+  ok: true,
+  get(k, d) { try { const v = localStorage.getItem('mo_' + k); return v ? JSON.parse(v) : d; } catch (e) { this.ok = false; return d; } },
+  set(k, v) { try { localStorage.setItem('mo_' + k, JSON.stringify(v)); } catch (e) { this.ok = false; } }
+};
+let prefs = Object.assign({ style: 'cartoon', autoPlay: true, autoVoice: false }, store.get('prefs', {}));
+let progress = Object.assign({ done: {}, pos: {} }, store.get('progress', {}));
+/* Чи вміє цей спосіб відкриття сайту взагалі щось запам'ятовувати.
+   firstRun — дата першого запуску: якщо вона щоразу «сьогоднішня», пам'ять не зберігається між запусками. */
+const storageWorks = (() => {
+  try { localStorage.setItem('mo_test', '1'); const ok = localStorage.getItem('mo_test') === '1'; localStorage.removeItem('mo_test'); return ok; }
+  catch (e) { return false; }
+})();
+let firstRun = store.get('firstRun', 0);
+if (!firstRun) { firstRun = Date.now(); store.set('firstRun', firstRun); }
+const savePrefs = () => store.set('prefs', prefs);
+const saveProgress = () => store.set('progress', progress);
+
+const DB = {
+  db: null,
+  open() {
+    return new Promise((res, rej) => {
+      if (this.db) return res(this.db);
+      if (!window.indexedDB) return rej(new Error('no-idb'));
+      let r;
+      try { r = indexedDB.open('malyuyu-olivtsem', 1); } catch (e) { return rej(e); }
+      r.onupgradeneeded = () => r.result.createObjectStore('photos', { keyPath: 'id' });
+      r.onsuccess = () => { this.db = r.result; res(this.db); };
+      r.onerror = () => rej(r.error);
+    });
+  },
+  async all() {
+    const db = await this.open();
+    return new Promise((res, rej) => {
+      const q = db.transaction('photos').objectStore('photos').getAll();
+      q.onsuccess = () => res(q.result.sort((a, b) => b.date - a.date));
+      q.onerror = () => rej(q.error);
+    });
+  },
+  async put(o) {
+    const db = await this.open();
+    return new Promise((res, rej) => {
+      const t = db.transaction('photos', 'readwrite');
+      t.objectStore('photos').put(o);
+      t.oncomplete = () => res(); t.onerror = () => rej(t.error);
+    });
+  },
+  async del(id) {
+    const db = await this.open();
+    return new Promise((res, rej) => {
+      const t = db.transaction('photos', 'readwrite');
+      t.objectStore('photos').delete(id);
+      t.oncomplete = () => res(); t.onerror = () => rej(t.error);
+    });
+  }
+};
+
+/* =====================================================================
+   Довідники
+   ===================================================================== */
+const STYLES = {
+  cartoon:   { name: 'Мультяшний',   icon: '😺', info: 'Прості круглі форми, велика голова, мало деталей і чіткий контур.' },
+  realistic: { name: 'Реалістичний', icon: '🐈', info: 'Справжні пропорції, багато відтінків сірого, шерсть короткими штрихами.' },
+  anime:     { name: 'Аніме',        icon: '✨', info: 'Дуже великі блискучі очі, м’які форми, чисті лінії і зовсім мало тіні.' }
+};
+const PENCIL = {
+  HB: { cls: 'HB', label: 'Олівець HB' },
+  '2B': { cls: 'B2', label: 'Олівець 2B' },
+  KL: { cls: 'kl', label: 'Гумка-клячка' }
+};
+const PRESS = ['', 'ледь-ледь', 'середньо', 'сильніше'];
+const NEED = 'Аркуш А4 вертикально, олівці HB і 2B, гумка-клячка.';
+
+const CATS = [
+  { id: 'basics',   title: 'Розминка й основи', icon: '✍️', sub: 'з цього варто почати' },
+  { id: 'shadows',  title: 'Тіні',              icon: '🌗', sub: 'світло, тінь і тони' },
+  { id: 'animals',  title: 'Тварини',           icon: '🐾', sub: 'кожна у трьох стилях' },
+  { id: 'people',   title: 'Люди',              icon: '👧', sub: 'обличчя, емоції, дівчинка' },
+  { id: 'textures', title: 'Текстури',          icon: '🧶', sub: 'шерсть, пір’я, луска' }
+];
+
+/* Спільні визначення для всіх малюнків: штрихування різної щільності,
+   плавний перехід тону і фільтр «олівець» (легке тремтіння + зернистість). */
+const DEFS = `
+<pattern id="h1" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="1" opacity=".5"/></pattern>
+<pattern id="h2" width="4.5" height="4.5" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><line x1="0" y1="0" x2="0" y2="4.5" stroke="#3a3a3a" stroke-width="1.1" opacity=".72"/></pattern>
+<pattern id="h3" width="4.5" height="4.5" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0 0 V4.5 M0 0 H4.5" stroke="#303030" stroke-width="1.1" opacity=".8"/></pattern>
+<pattern id="h4" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0 0 V3.2 M0 0 H3.2" stroke="#1f1f1f" stroke-width="1.3" opacity=".9"/></pattern>
+<linearGradient id="toneGrad" x1="0" x2="1"><stop offset="0" stop-color="#262626"/><stop offset=".55" stop-color="#9a9a9a"/><stop offset="1" stop-color="#fffdf7"/></linearGradient>
+<filter id="pencil" x="-3%" y="-3%" width="106%" height="106%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="w"/>
+  <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+  <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" seed="3" result="n"/>
+  <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 2.05" result="na"/>
+  <feComposite in="d" in2="na" operator="in"/>
+</filter>`;
+
+/* Допоміжні генератори ліній для розминки */
+function hatchBlock(x, y, w, h, s, cross) {
+  let d = '';
+  for (let i = 0; i <= w - 16; i += s) {
+    d += `M${x + i} ${y + h} l16 ${-h} `;
+    if (cross) d += `M${x + i} ${y} l16 ${h} `;
+  }
+  return `<path class="l" d="${d}"/>`;
+}
+function spiral(cx, cy, turns, maxR) {
+  let d = ''; const n = turns * 40;
+  for (let i = 0; i <= n; i++) {
+    const a = i / 40 * 2 * Math.PI, r = maxR * i / n;
+    d += (i ? 'L' : 'M') + (cx + r * Math.cos(a)).toFixed(1) + ' ' + (cy + r * Math.sin(a)).toFixed(1) + ' ';
+  }
+  return d;
+}
+const row = (fn, xs) => xs.map(fn).join('');
+
+const sparkle = (x, y, r) => `M${x} ${y - r} L${x + r * .25} ${y - r * .25} L${x + r} ${y} L${x + r * .25} ${y + r * .25} L${x} ${y + r} L${x - r * .25} ${y + r * .25} L${x - r} ${y} L${x - r * .25} ${y - r * .25} Z`;
+function scales(x0, y0, cols, rows, w, h) {
+  let d = '';
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const x = x0 + c * w + (r % 2 ? w / 2 : 0), y = y0 + r * h;
+    d += `M${x} ${y} q${w / 2} ${(h * .8).toFixed(1)} ${w} 0 `;
+  }
+  return d;
+}
+function owlMarks() {
+  let d = '';
+  [252, 276, 300, 324, 348, 372, 396].forEach((y, i) => {
+    for (let x = 168 + (i % 2) * 10; x <= 252; x += 20) d += `M${x} ${y} l-1 6 M${x - 5} ${y + 8} q5 6 10 0 `;
+  });
+  return d;
+}
+/* Люди: чотири голови на аркуші для уроку емоцій і лінійка «скільки голів у зрості» */
+const EMO = [[110, 180], [310, 180], [110, 430], [310, 430]];
+const tr = (x, y, str) => `<g transform="translate(${x} ${y})">${str}</g>`;
+const EMO_LBL = `<g class="lbls">${['Радість', 'Сум', 'Здивування', 'Злість'].map((t, i) => `<text x="${EMO[i][0]}" y="${EMO[i][1] + 114}" text-anchor="middle">${t}</text>`).join('')}</g>`;
+const R_HEAD = `<path class="l" d="M-56 -40 Q-58 20 -34 60 Q-18 78 0 80 Q18 78 34 60 Q58 20 56 -40 M-57 -8 Q-68 -10 -66 8 Q-64 22 -55 24 M57 -8 Q68 -10 66 8 Q64 22 55 24 M-62 -10 Q-72 -104 0 -102 Q72 -104 62 -10 M-56 -40 Q-40 -74 0 -72 Q40 -74 56 -40 M-4 20 Q2 30 7 24"/><path class="g" d="M0 -90 L0 80 M-58 -6 L58 -6 M-30 26 L30 26"/>`;
+const A_HEAD = `<path class="l" d="M-66 -14 Q-66 40 -30 66 Q-12 80 0 82 Q12 80 30 66 Q66 40 66 -14 M-74 10 Q-86 -96 0 -98 Q86 -96 74 10 M-62 -46 L-50 -24 L-42 -60 L-24 -28 L-10 -64 L0 -30 L10 -64 L24 -28 L42 -60 L50 -24 L62 -46 M-74 10 Q-78 40 -62 66 M74 10 Q78 40 62 66 M2 30 l-2 5"/><path class="g" d="M0 -98 L0 82 M-66 10 L66 10"/>`;
+const RULER = ys => `<g class="lbls"><path d="M362 ${ys[0]} L362 ${ys[ys.length - 1]} ${ys.map(y => `M354 ${y} h16`).join(' ')}"/>${ys.slice(0, -1).map((y, i) => `<text x="376" y="${(y + ys[i + 1]) / 2 + 6}">${i + 1}</text>`).join('')}</g>`;
+/* Аніме-око: темний верх, світліший низ, зіниця, два блиски, товста лінія вій */
+function aEye(cx, cy, rx, ry, side = 1) {
+  const L = cx - rx, R = cx + rx, f = n => +n.toFixed(1);
+  return `<ellipse class="l" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`
+    + `<path class="s2" d="M${L} ${cy} A${rx} ${ry} 0 0 0 ${R} ${cy} Z"/>`
+    + `<path class="fd" d="M${L} ${cy} A${rx} ${ry} 0 0 1 ${R} ${cy} Z"/>`
+    + `<ellipse class="fd" cx="${cx}" cy="${f(cy + 3)}" rx="${f(rx * .33)}" ry="${f(ry * .46)}"/>`
+    + `<circle class="fw" cx="${f(cx + rx * .37)}" cy="${f(cy - ry * .46)}" r="${f(rx * .33)}"/>`
+    + `<circle class="fw" cx="${f(cx - rx * .33)}" cy="${f(cy + ry * .5)}" r="${f(rx * .17)}"/>`
+    + `<path class="l x" d="M${L - 4} ${f(cy - ry * .5)} Q${cx} ${f(cy - ry * 1.28)} ${R + 4} ${f(cy - ry * .5)}"/>`
+    + (side < 0 ? `<path class="l" d="M${L - 4} ${f(cy - ry * .5)} l-9 -7 M${L - 2} ${f(cy - ry * .72)} l-7 -9"/>`
+                : `<path class="l" d="M${R + 4} ${f(cy - ry * .5)} l9 -7 M${R + 2} ${f(cy - ry * .72)} l7 -9"/>`);
+}
+
+/* =====================================================================
+   УРОКИ
+   Кожен крок: t — текст, p — олівець, f — натиск (1–3), tip — порада,
+   a — що додається на малюнок, o — підписи поверх (без «олівцевого» фільтра),
+   ink — обвести все начисто, erase — стерти допоміжні лінії.
+   Класи ліній: g — допоміжна, l — контур, k — жирна риска 2B,
+   fd — темна заливка, fw — білий відблиск, s1…s4 — штрихування від світлого до темного.
+   ===================================================================== */
+const LESSONS = [
+/* ---------------- РОЗМИНКА ---------------- */
+{
+  id: 'warmup', cat: 'basics', title: 'Розминка для руки', emoji: '✍️', box: '20 30 380 530',
+  steps: [
+    { p: 'HB', f: 1, t: 'Проведи п’ять рівних горизонтальних ліній через увесь аркуш. Рухай усією рукою від плеча, а не тільки пальцями, і не зупиняйся посередині.',
+      tip: 'Розминка займає три хвилини. Роби її перед кожним малюнком — рука стане слухнянішою.',
+      a: `<path class="l" d="M40 60 L380 60 M40 85 L380 85 M40 110 L380 110 M40 135 L380 135 M40 160 L380 160"/>` },
+    { p: 'HB', f: 1, t: 'Тепер п’ять кіл одним рухом. Спершу зроби рукою кілька кругів у повітрі над папером, а потім опусти олівець. Ідеально круглими вони не будуть, і це нормально.',
+      a: row(x => `<circle class="l" cx="${x}" cy="228" r="28"/>`, [70, 140, 210, 280, 350]) },
+    { p: 'HB', f: 1, t: 'Овали — основа для голів і тулубів тварин. Малюй їх по черзі: лежачий, стоячий, лежачий…',
+      a: row((x, i) => `<ellipse class="l" cx="${x}" cy="318" rx="${i % 2 ? 18 : 32}" ry="${i % 2 ? 30 : 18}"/>`, [70, 140, 210, 280, 350]) },
+    { p: 'HB', f: 2, t: 'Штрихи — це короткі паралельні лінії в один бік. Чим ближче вони одна до одної, тим темніше. Зроби чотири квадратики: від рідких штрихів до густих, а в останньому — перехресні.',
+      tip: 'Штрих роби швидко, «з розгону», і відривай олівець наприкінці.',
+      a: hatchBlock(40, 380, 72, 60, 12) + hatchBlock(134, 380, 72, 60, 8) + hatchBlock(228, 380, 72, 60, 5) + hatchBlock(322, 380, 72, 60, 5, true) },
+    { p: 'HB', f: 1, t: 'Спіраль від центру назовні і хвиляста лінія. Це тренує плавність руки — знадобиться для хвостів, шерсті й волосся.',
+      a: `<path class="l" d="${spiral(100, 515, 4, 45)}"/><path class="l" d="M190 515 q20 -32 40 0 t40 0 t40 0 t40 0 t40 0"/>` }
+  ]
+},
+/* ---------------- ШКАЛА ТОНІВ ---------------- */
+{
+  id: 'tones', cat: 'shadows', title: 'Шкала тонів', emoji: '🔲', box: '20 70 390 300',
+  steps: [
+    { p: 'HB', f: 1, t: 'Намалюй п’ять квадратів у ряд і підпиши їх цифрами від 1 до 5. Квадрат 1 так і лишиться білим: найсвітліше на малюнку — це сам папір.',
+      a: `<path class="l" d="M30 120 h64 v64 h-64 Z M108 120 h64 v64 h-64 Z M186 120 h64 v64 h-64 Z M264 120 h64 v64 h-64 Z M342 120 h64 v64 h-64 Z"/>`,
+      o: `<g class="lbls">${row((x, i) => `<text x="${x + 26}" y="110">${i + 1}</text>`, [30, 108, 186, 264, 342])}
+          <text class="sm" x="44" y="206">папір</text><text class="sm" x="112" y="206">HB легко</text><text class="sm" x="188" y="206">HB сильно</text><text class="sm" x="284" y="206">2B</text><text class="sm" x="344" y="206">2B сильно</text></g>` },
+    { p: 'HB', f: 1, t: 'Квадрат 2: олівцем HB ледь-ледь заштрихуй його штрихами в один бік, близько один до одного.',
+      a: `<rect class="s1" x="108" y="120" width="64" height="64"/>` },
+    { p: 'HB', f: 3, t: 'Квадрат 3: той самий HB, але натискай сильніше і поклади ще один шар штрихів зверху.',
+      a: `<rect class="s2" x="186" y="120" width="64" height="64"/>` },
+    { p: '2B', f: 2, t: 'Квадрат 4: візьми м’якший олівець 2B. Штрихуй в одному напрямку, а потім упоперек — вийде сітка.',
+      a: `<rect class="s3" x="264" y="120" width="64" height="64"/>` },
+    { p: '2B', f: 3, t: 'Квадрат 5 — найтемніший. 2B з сильним натиском, кілька шарів, щоб майже не було видно білого паперу.',
+      tip: 'Не тисни так сильно, щоб рвався папір. Краще ще один шар.',
+      a: `<rect class="s4" x="342" y="120" width="64" height="64"/>` },
+    { p: '2B', f: 2, t: 'А тепер розтяжка: плавний перехід від найтемнішого до білого. Починай зліва 2B з сильним натиском і поступово послаблюй руку. Можна обережно потерти серветкою, щоб штрихи злилися.',
+      tip: 'Серветкою розтирай тільки від темного до світлого, а не навпаки. Збережи цей аркуш — це твоя шпаргалка тонів.',
+      a: `<rect class="grd" x="30" y="270" width="376" height="70"/><path class="l" d="M30 270 h376 v70 h-376 Z"/>`,
+      o: `<g class="lbls"><text class="sm" x="30" y="364">темно</text><text class="sm" x="406" y="364" text-anchor="end">світло</text></g>` }
+  ]
+},
+/* ---------------- КУЛЯ ---------------- */
+{
+  id: 'sphere', cat: 'shadows', title: 'Освітлена куля', emoji: '⚪', box: '10 60 410 420',
+  defs: `<mask id="outS"><rect width="420" height="594" fill="#fff"/><circle cx="210" cy="260" r="110" fill="#000"/></mask>`,
+  steps: [
+    { p: 'HB', f: 1, t: 'Намалюй коло завбільшки приблизно з долоню. У цьому уроці можна обвести кришку від баночки чи котушку скотчу — це дозволено.',
+      a: `<circle class="l" cx="210" cy="260" r="110"/>` },
+    { p: 'HB', f: 1, t: 'Домовимося, що світло падає зліва згори. Намалюй маленьке сонечко і стрілку до кулі. Усе, що дивиться на сонце, — світле, а що відвернулося — темне.',
+      a: `<circle class="g" cx="68" cy="88" r="18"/><path class="g" d="M68 58 V48 M68 118 V128 M38 88 H28 M98 88 H108 M47 67 L40 60 M89 67 L96 60 M47 109 L40 116 M100 120 L152 172 M152 172 L137 169 M152 172 L149 157"/>` },
+    { p: 'HB', f: 1, t: 'Проведи легеньку дугу — межу між світлом і тінню. Вона вигинається, бо куля кругла. А кружечком познач відблиск — найяскравішу точку, яку ми не штрихуватимемо.',
+      a: `<path class="g" d="M132 338 Q255 315 288 182"/><ellipse class="g" cx="170" cy="215" rx="22" ry="16" stroke-dasharray="5 5"/>` },
+    { p: 'HB', f: 1, t: 'Олівцем HB легко заштрихуй усю кулю, крім відблиску. Це «світло» — найсвітліший сірий.',
+      tip: 'Штрихи клади злегка дугою, по формі кулі.',
+      a: `<circle class="s1" cx="210" cy="260" r="110"/>` },
+    { p: '2B', f: 2, t: 'Тепер власна тінь: олівцем 2B заштрихуй частину за дугою. Найтемніша смуга — одразу біля межі світла.',
+      a: `<path class="s3" d="M132 338 Q255 315 288 182 A110 110 0 0 1 132 338 Z"/><path class="s4" d="M132 338 Q255 315 288 182 L300 206 Q272 330 152 350 Z"/>` },
+    { p: 'KL', f: 1, t: 'Біля самого краю, в тіні, стає трохи світліше. Це рефлекс: світло відбивається від столу і підсвічує кулю знизу. Легко промокни там клячкою.',
+      tip: 'Клячку не треба терти — притисни й відірви. Так вона забирає графіт акуратно.',
+      a: `<path class="rf" d="M160 347 A100 100 0 0 0 301 218"/>` },
+    { p: '2B', f: 3, t: 'Падаюча тінь лягає на стіл у протилежний від сонця бік — праворуч. Найтемніша вона під самою кулею, там, де куля торкається столу.',
+      a: `<g mask="url(#outS)"><ellipse class="s3" cx="300" cy="372" rx="115" ry="24"/><ellipse class="fd" cx="232" cy="367" rx="52" ry="8"/></g>` },
+    { p: 'KL', f: 2, t: 'Клячкою зроби відблиск і зітри допоміжні лінії. Готово! Ці п’ять зон є в тіні будь-якого предмета: кота, обличчя, яблука.',
+      erase: true, ink: true,
+      a: `<ellipse class="fw" cx="170" cy="215" rx="20" ry="14"/>`,
+      o: `<g class="lbls"><path d="M96 182 L156 208 M82 262 L140 262 M318 262 L280 286 M346 336 L298 320 M346 424 L330 386"/>
+          <text x="18" y="180">відблиск</text><text x="18" y="268">світло</text><text x="410" y="258" text-anchor="end">власна тінь</text>
+          <text x="410" y="342" text-anchor="end">рефлекс</text><text x="410" y="442" text-anchor="end">падаюча тінь</text></g>` }
+  ]
+},
+/* ---------------- КІТ ---------------- */
+{
+  id: 'cat', cat: 'animals', title: 'Котик', emoji: '🐱', box: '70 50 320 470',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Легенько намалюй велике коло — це голова. Під ним овал, трохи більший, — це тулуб. Через коло проведи хрестик: вертикальну лінію посередині й горизонтальну трохи нижче центру. На горизонтальній лінії будуть очі.',
+        tip: 'Голова — у верхній частині аркуша. Залиш місце внизу для лапок і тіні.',
+        a: `<circle class="g" cx="210" cy="210" r="85"/><ellipse class="g" cx="210" cy="390" rx="95" ry="100"/><path class="g" d="M210 118 L210 300 M122 216 L298 216"/>` },
+      { p: 'HB', f: 1, t: 'Додай вуха — два трикутники з круглими кінчиками, а всередині кожного ще один маленький трикутник. Обведи голову: щічки трохи ширші за коло.',
+        a: `<path class="l" d="M138 165 Q132 95 150 78 Q175 100 196 128 M282 165 Q288 95 270 78 Q245 100 224 128 M196 128 Q210 124 224 128 M138 165 Q118 205 128 240 Q140 285 210 292 Q280 285 292 240 Q302 205 282 165"/><path class="l" d="M150 150 Q148 108 156 96 Q170 110 182 128 M270 150 Q272 108 264 96 Q250 110 238 128"/>` },
+      { p: 'HB', f: 2, t: 'Очі — два великі овали прямо на горизонтальній лінії. Всередині темні зіниці, але залиш білий кружечок — блиск, так очі «оживають». Між очима, трохи нижче, — носик-трикутник, під ним ротик, схожий на літеру «ω». І по два вуса з кожного боку.',
+        tip: 'Зіниці можна зафарбувати олівцем 2B — вони будуть темнішими й яскравішими.',
+        a: `<ellipse class="l" cx="175" cy="214" rx="17" ry="21"/><ellipse class="l" cx="245" cy="214" rx="17" ry="21"/><ellipse class="fd" cx="178" cy="217" rx="10" ry="14"/><ellipse class="fd" cx="242" cy="217" rx="10" ry="14"/><circle class="fw" cx="182" cy="210" r="4.5"/><circle class="fw" cx="246" cy="210" r="4.5"/><path class="fd" d="M201 238 Q210 234 219 238 L210 248 Z"/><path class="l" d="M210 248 L210 254 M210 254 Q201 264 192 256 M210 254 Q219 264 228 256 M160 246 L110 238 M160 254 L108 258 M260 246 L310 238 M260 254 L312 258"/>` },
+      { p: 'HB', f: 1, t: 'Тулуб: від щічок униз веди дві лінії по краях овалу. Спереду дві лапки: по дві лінії й овальчики внизу. Збоку пухнастий хвіст, що загинається вгору.',
+        a: `<path class="l" d="M150 282 Q110 340 118 420 Q122 468 160 480 M270 282 Q310 340 302 420 Q298 468 260 480 M178 382 Q172 430 170 468 M200 392 Q205 430 208 467 M242 382 Q248 430 250 468 M220 392 Q215 430 212 467"/><ellipse class="l" cx="187" cy="478" rx="25" ry="13"/><ellipse class="l" cx="233" cy="478" rx="25" ry="13"/><path class="l" d="M183 485 L183 491 M193 485 L193 491 M229 485 L229 491 M239 485 L239 491 M298 440 Q372 450 372 380 Q370 338 340 336 Q330 340 338 350 Q358 360 356 390 Q352 440 300 462"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Тепер обведи всі потрібні лінії впевнено й рівно, а допоміжні — коло, овал і хрестик — зітри клячкою.',
+        tip: 'Клячку можна м’яти в пальцях і робити з неї гострий кінчик для дрібних місць.', a: '' },
+      { p: '2B', f: 2, t: 'Фінал — тіні! Світло падає зліва, тож праву частину тулуба ледь-ледь заштрихуй. Всередині вушок і під котиком на підлозі — темніше, олівцем 2B. На лобі три смужки, на хвості теж.',
+        a: `<path class="s1" d="M270 290 Q305 345 298 420 Q294 460 262 478 Q282 420 270 290 Z"/><path class="s2" d="M150 150 Q148 108 156 96 Q170 110 182 128 Z M270 150 Q272 108 264 96 Q250 110 238 128 Z"/><ellipse class="s2" cx="215" cy="501" rx="125" ry="11"/><path class="l k" d="M196 140 L200 160 M210 133 L210 158 M224 140 L220 160 M352 352 L366 346 M359 380 L373 380 M350 410 L364 418"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Справжній кіт складається з кіл. Легенько намалюй: невелике коло — голова, під ним овал грудей, а праворуч унизу найбільше коло — задня частина, на якій кіт сидить. Внизу проведи лінію підлоги.',
+        tip: 'Порівняй: у мультяшного кота голова майже як тулуб, а в справжнього — у кілька разів менша. Це і є реалістичні пропорції.',
+        a: `<circle class="g" cx="202" cy="200" r="46"/><ellipse class="g" cx="192" cy="308" rx="62" ry="64"/><circle class="g" cx="262" cy="416" r="92"/><path class="g" d="M208 154 Q215 200 209 246 M158 196 Q204 202 250 190 M40 508 L390 508"/>` },
+      { p: 'HB', f: 1, t: 'Голова. Вуха великі й гострі, стоять широко. Щоки пухнасті — роби лінію з маленькими зубчиками. Кіт трохи повернувся, тому середня лінія обличчя зміщена праворуч, а з нею й морда з подушечками для вусів.',
+        a: `<g transform="translate(0 30)"><path class="l" d="M152 150 Q148 110 160 80 Q180 100 192 122 M226 118 Q246 92 258 78 Q262 110 252 145 M192 122 Q209 116 226 118 M152 150 Q142 178 150 198 L144 204 L156 206 Q170 222 196 228 Q206 232 216 228 Q240 220 250 200 L258 196 L252 188 Q260 168 252 145"/><path class="l" d="M194 200 Q186 206 190 214 Q198 218 208 212 Q216 218 224 214 Q228 206 220 200 M198 222 Q208 226 218 222 M166 128 L170 108 M172 134 L178 116 M240 126 L246 106 M234 130 L240 114"/></g>` },
+      { p: 'HB', f: 2, t: 'Очі мигдалеві, як листочок, стоять на лінії очей. Верхню повіку обведи темніше, райдужку ледь заштрихуй, зіниці — вертикальні щілинки. Між очима й трохи нижче — ніс-трикутник, від нього вниз рисочка. Вуса довгі й тонкі: проводь їх швидким рухом від подушечок.',
+        a: `<g transform="translate(0 30)"><path class="s1" d="M166 168 Q180 154 196 166 Q181 178 166 168 Z M216 164 Q230 151 244 160 Q232 173 216 164 Z"/><path class="l" d="M166 168 Q181 178 196 166 M216 164 Q232 173 244 160"/><path class="l k" d="M166 168 Q180 154 196 166 M216 164 Q230 151 244 160"/><path class="fd" d="M181 158 Q177 166 181 174 Q185 166 181 158 Z M230 155 Q227 162 230 169 Q233 162 230 155 Z M200 191 Q208 187 216 191 L208 199 Z"/><path class="l" d="M208 199 L208 207 M192 206 L130 196 M192 210 L128 214 M194 214 L142 228 M222 205 L284 192 M222 209 L288 210 M220 213 L276 226"/></g>` },
+      { p: 'HB', f: 1, t: 'Тулуб. Груди виступають уперед м’якою дугою, від потилиці лінія спини спускається до великої задньої частини. Передні лапи — дві «колони», що трохи звужуються донизу, лапки округлі, з пальчиками. Видно зігнуте стегно й задню ступню. Хвіст обгортає лапи спереду.',
+        a: `<path class="l" d="M156 236 Q124 266 126 310 Q128 338 146 356 M252 176 Q296 220 318 300 Q358 356 352 430 Q346 486 310 504 M146 356 Q140 404 144 470 Q146 486 146 494 M174 364 Q170 424 176 494 M190 364 Q198 424 192 496 M220 354 Q228 412 222 496 M142 494 Q138 506 160 506 Q180 506 176 494 M188 496 Q184 508 206 508 Q228 508 222 496 M154 499 L154 506 M166 499 L166 506 M200 501 L200 508 M212 501 L212 508 M232 364 Q292 346 314 420 Q320 466 300 490 M270 504 Q288 492 320 500 Q330 508 308 511 Q284 512 270 504 M326 472 Q358 514 300 524 Q210 534 150 522 Q132 516 142 508 Q210 518 288 512 Q324 506 318 482"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи контур, але не гладко: там, де шерсть пухнаста — на грудях, щоках і спині, — роби короткі штрихи в напрямку росту шерсті. Допоміжні кола зітри.',
+        a: `<path class="l" d="M140 262 l-9 5 M130 286 l-10 4 M127 310 l-9 4 M134 334 l-8 6 M170 258 l2 11 M182 262 l1 11 M160 290 q6 8 2 16 M176 300 q6 8 2 16 M276 200 l8 2 M292 232 l9 3 M306 268 l9 2 M316 300 l9 2 M336 340 l9 1"/>` },
+      { p: '2B', f: 2, t: 'Тіні. Світло зліва, тому права сторона кота темніша. HB легко заштрихуй спину й задню частину, а біля самого краю — темніше, олівцем 2B. Тінь під підборіддям, під стегном і тонкі смужки тіні на лапах. Смужки шерсті на лобі, щоці, боці й хвості — вигнуті по формі тіла.',
+        tip: 'Штрихи клади вздовж шерсті, а не впоперек — тоді тінь одразу виглядає як хутро.',
+        a: `<path class="s1" d="M252 176 Q296 220 318 300 Q358 356 352 430 Q346 486 310 504 Q330 440 314 380 Q292 300 268 256 Q256 214 242 180 Z"/><path class="s3" d="M328 332 Q356 384 348 440 Q340 484 314 500 Q332 450 328 400 Q326 362 328 332 Z"/><path class="s2" d="M168 364 Q166 420 170 494 L176 494 Q170 420 174 362 Z M214 356 Q222 410 216 496 L222 496 Q228 410 220 354 Z M232 364 Q292 346 314 420 Q320 466 300 490 Q298 420 268 382 Q254 370 232 366 Z"/><ellipse class="s2" cx="236" cy="519" rx="140" ry="14"/><g transform="translate(0 30)"><path class="s1" d="M242 140 Q262 168 252 196 Q244 170 232 150 Z"/><path class="s2" d="M156 206 Q170 222 196 228 Q206 232 216 228 Q240 220 250 200 Q238 240 206 244 Q176 242 156 206 Z"/><path class="s2" d="M160 144 Q158 112 164 94 Q178 108 186 124 Z M232 122 Q246 100 254 90 Q256 116 248 138 Z"/><path class="l k" d="M196 132 L198 146 M206 127 L206 143 M216 129 L214 144 M150 182 l12 3 M151 192 l12 2"/></g><path class="l k" d="M276 356 Q296 384 292 422 M300 348 Q320 384 316 424 M324 444 Q332 464 326 484 M184 514 L188 530 M218 516 L222 532 M252 514 L256 528 M290 508 L297 522"/>` },
+      { p: 'KL', f: 1, t: 'Останній штрих — клячкою. Зроби з неї гострий кінчик і постав білі блиски в очах. Легко промокни смугу вздовж спини — там шерсть блищить на світлі.',
+        a: `<g transform="translate(0 30)"><circle class="fw" cx="186" cy="162" r="2.6"/><circle class="fw" cx="235" cy="158" r="2.2"/></g><path class="rf" d="M276 226 Q300 290 314 350" stroke-width="8"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-котик у стилі «чібі»: голова велика, тулуб маленький. Намалюй широкий овал для голови, а під ним невеликий овал тулуба. Хрестик на голові: горизонтальну лінію роби помітно нижче центру — в аніме очі сидять низько.',
+        a: `<ellipse class="g" cx="210" cy="205" rx="100" ry="82"/><ellipse class="g" cx="210" cy="365" rx="65" ry="78"/><path class="g" d="M210 125 L210 288 M112 226 L308 226"/>` },
+      { p: 'HB', f: 1, t: 'Великі вуха з пухнастими пучками всередині. Обведи голову, а на щічках зроби зубчики — пухнасті бакенбарди. Згори — маленький чубчик.',
+        a: `<path class="l" d="M125 172 Q118 95 135 62 Q170 85 188 128 M295 172 Q302 95 285 62 Q250 85 232 128 M188 128 Q210 122 232 128 M125 172 Q105 215 118 245 L106 255 L127 258 L119 270 L142 268 Q175 292 210 292 Q245 292 278 268 L301 270 L293 258 L314 255 L302 245 Q315 215 295 172"/><path class="l" d="M137 145 Q134 100 142 82 Q162 100 172 128 M283 145 Q286 100 278 82 Q258 100 248 128 M141 128 L153 116 M143 140 L157 130 M279 128 L267 116 M277 140 L263 130 M198 128 Q204 110 212 124 Q218 108 224 127"/>` },
+      { p: '2B', f: 2, t: 'Головне в аніме — очі! Великі овали на лінії. Верхній край — товста темна лінія, як вії. Верхню половину ока зафарбуй темно, нижню — світліше, штрихами. Обов’язково залиш два білі блиски: великий зверху і маленький знизу, в обох очах з одного боку.',
+        tip: 'Блиски легше залишити, ніж потім стерти. Обведи їх кружечками одразу, до того як штрихувати.',
+        a: `<ellipse class="l" cx="168" cy="228" rx="24" ry="28"/><ellipse class="l" cx="252" cy="228" rx="24" ry="28"/><path class="s2" d="M144 228 A24 28 0 0 0 192 228 Z M228 228 A24 28 0 0 0 276 228 Z"/><path class="fd" d="M144 228 A24 28 0 0 1 192 228 Z M228 228 A24 28 0 0 1 276 228 Z"/><ellipse class="fd" cx="168" cy="231" rx="8" ry="13"/><ellipse class="fd" cx="252" cy="231" rx="8" ry="13"/><circle class="fw" cx="177" cy="215" r="8"/><circle class="fw" cx="261" cy="215" r="8"/><circle class="fw" cx="160" cy="242" r="4"/><circle class="fw" cx="244" cy="242" r="4"/><path class="l x" d="M138 214 Q165 192 197 207 M282 214 Q255 192 223 207"/><path class="l" d="M195 206 L205 197 M139 213 L131 206 M225 206 L215 197 M281 213 L289 206"/>` },
+      { p: 'HB', f: 1, t: 'Ротик — маленька «w», носик крихітний. На щічках рум’янець: кілька коротких косих рисочок. Тулуб маленький, на грудях пухнасті зубчики, коротенькі лапки й великий пухнастий хвіст.',
+        a: `<path class="fd" d="M205 257 L215 257 L210 262 Z"/><path class="l" d="M198 265 Q204 272 210 265 Q216 272 222 265 M128 256 L134 248 M136 259 L142 251 M144 261 L150 253 M270 261 L276 253 M278 259 L284 251 M286 256 L292 248 M122 238 L96 234 M124 246 L98 250 M298 238 L324 234 M296 246 L322 250"/><path class="l" d="M160 284 Q145 330 150 380 Q152 425 172 440 M260 284 Q275 330 270 380 Q268 425 248 440 M185 360 Q182 405 180 430 M200 365 Q204 405 206 432 M235 360 Q238 405 240 430 M220 365 Q216 405 214 432 M190 300 L196 312 L204 302 L210 316 L216 302 L224 312 L230 300"/><ellipse class="l" cx="192" cy="440" rx="20" ry="11"/><ellipse class="l" cx="228" cy="440" rx="20" ry="11"/><path class="l" d="M266 420 Q330 430 335 370 Q338 330 312 318 Q300 322 310 332 Q322 350 314 380 Q304 410 262 405"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто. Аніме любить чисті, плавні лінії без зайвих штрихів. Допоміжні лінії зітри клячкою.', a: '' },
+      { p: 'HB', f: 1, t: 'Тіней в аніме мало: трохи штрихів усередині вушок, на правому боці тулуба і тінь на підлозі. Навколо можна додати зірочки-блискітки — це дуже по-аніме.',
+        a: `<path class="s1" d="M137 145 Q134 100 142 82 Q162 100 172 128 Z M283 145 Q286 100 278 82 Q258 100 248 128 Z"/><path class="s1" d="M260 290 Q275 330 270 380 Q268 425 248 440 Q262 380 260 290 Z"/><ellipse class="s2" cx="212" cy="457" rx="95" ry="9"/><path class="l" d="M345 100 L348 113 L361 116 L348 119 L345 132 L342 119 L329 116 L342 113 Z M80 300 L82 307 L89 309 L82 311 L80 318 L78 311 L71 309 L78 307 Z M362 248 L363.5 253 L368 254.5 L363.5 256 L362 261 L360.5 256 L356 254.5 L360.5 253 Z"/>` }
+    ]}
+  }
+},
+/* ---------------- СКОРО ---------------- */
+/* ---------------- КАПІБАРА ---------------- */
+{
+  id: 'capybara', cat: 'animals', title: 'Капібара', emoji: '🦫', box: '30 100 380 400',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Капібара схожа на буханець хліба. Намалюй великий лежачий овал — тулуб, а зліва згори на ньому менший овал — голову. Унизу проведи лінію землі.',
+        tip: 'Малюнок широкий, тому займи всю ширину аркуша.',
+        a: `<ellipse class="g" cx="235" cy="340" rx="135" ry="88"/><ellipse class="g" cx="128" cy="268" rx="70" ry="56"/><path class="g" d="M40 468 L390 468"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову й тулуб однією плавною лінією, як пагорб: від носа через маківку і спину до задньої частини. Голова в капібари майже квадратна, з тупим носом. На маківці — маленьке кругле вушко.',
+        a: `<path class="l" d="M64 290 Q56 248 80 224 Q110 198 158 204 Q200 212 228 246 Q300 236 350 266 Q388 298 374 368 Q364 420 320 432 M64 290 Q70 318 108 322 Q130 330 132 360 Q130 400 142 432"/><path class="l" d="M166 210 Q166 188 184 190 Q198 198 190 216"/>` },
+      { p: 'HB', f: 2, t: 'Очко маленьке й кругле, високо на голові — ближче до вуха, ніж до носа. Залиш у ньому білу крапочку. На кінчику носа — ніздря-рисочка, внизу спокійна усмішка. На щічці рум’янець.',
+        a: `<ellipse class="fd" cx="126" cy="246" rx="6.5" ry="7.5"/><circle class="fw" cx="128.5" cy="243.5" r="2.2"/><path class="l" d="M74 256 q6 -4 10 1 M66 292 Q80 299 94 290 M108 266 l-6 8 M116 268 l-6 8 M124 270 l-6 8"/>` },
+      { p: 'HB', f: 1, t: 'Лапки короткі, як пеньочки: чотири маленькі стовпчики з круглими кінчиками. А для настрою — мандаринка на голові. Капібари справді так сидять!',
+        a: `<path class="l" d="M142 430 L142 458 Q142 468 154 468 Q168 468 168 458 L168 432 M180 434 L180 454 Q182 464 192 464 Q202 464 202 454 L202 436 M260 434 L260 454 Q262 464 272 464 Q282 464 282 454 L282 434 M292 430 L292 458 Q294 468 306 468 Q320 468 320 458 L320 432 M168 434 Q230 442 260 434"/><circle class="l" cx="140" cy="184" r="19"/><path class="l" d="M140 165 q8 -12 22 -8 q-8 12 -22 8 M138 166 l-2 -7"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи всі потрібні лінії впевнено, а допоміжні овали й лінію землі зітри клячкою.', a: '' },
+      { p: '2B', f: 2, t: 'Тіні: низ тулуба ледь-ледь заштрихуй — туди світло не дістає. Вушко й бік мандаринки теж. Під капібарою на землі тінь олівцем 2B. Кілька коротких рисочок на спині — це жорстка шерсть.',
+        a: `<path class="s1" d="M132 360 Q130 400 142 432 L320 432 Q364 420 374 368 Q340 408 250 410 Q170 408 132 360 Z"/><path class="s2" d="M170 208 Q170 194 182 194 Q190 202 186 212 Z"/><path class="s1" d="M146 166 A19 19 0 0 1 140 203 A13 19 0 0 0 146 166 Z"/><ellipse class="s2" cx="232" cy="474" rx="150" ry="10"/><path class="l" d="M246 250 l7 -3 M276 250 l7 -2 M306 258 l7 -1 M336 274 l6 1 M216 300 l7 -2 M260 296 l7 -2 M300 304 l7 -1"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Справжня капібара — великий «бочонок» на коротких ногах. Намалюй довгий овал тулуба. Голову побудуй як нахилений брусок, а не як коло: голова в капібари квадратна. З’єднай голову з тулубом лініями шиї. Внизу — лінія землі.',
+        a: `<ellipse class="g" cx="255" cy="318" rx="125" ry="80"/><path class="g" d="M72 222 L150 202 L170 288 L80 302 Z M150 202 L200 238 M170 288 L196 320 M30 470 L395 470"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову: пряма широка морда, тупий ніс, масивна щелепа. Від потилиці лінія спини йде майже рівно і закруглюється ззаду — хвоста в капібари майже немає. Маленьке кругле вухо — на потилиці.',
+        a: `<path class="l" d="M150 204 Q120 194 96 208 Q70 222 62 250 Q58 280 72 296 Q90 306 118 300 Q150 294 170 284 M150 204 Q182 200 204 232 Q250 236 300 238 Q362 244 380 300 Q388 350 362 390 Q342 404 318 400 M170 284 Q168 326 178 362 M200 392 Q258 406 300 398"/><path class="l" d="M166 212 Q166 194 182 196 Q192 206 184 222"/>` },
+      { p: 'HB', f: 1, t: 'Ноги короткі й товсті. Спершу дві ближні ноги — передня й задня, потім дві дальні, трохи позаду: їх видно менше. Ступні широкі — пальці позначай короткими рисками.',
+        a: `<path class="l" d="M178 362 Q176 410 178 452 M200 380 Q202 420 198 452 M172 452 Q170 464 182 464 L204 464 Q210 458 198 452 M214 392 L216 446 M230 394 L232 446 M212 446 Q210 457 220 457 L236 456 Q240 450 232 446 M300 396 Q296 430 300 454 M326 392 Q330 424 324 454 M294 454 Q292 465 304 465 L330 465 Q336 458 324 454 M340 382 L344 440 M358 374 L360 440 M338 440 Q336 451 346 451 L364 450 Q368 444 360 440 M184 464 l0 -5 M194 464 l0 -5 M308 465 l0 -5 M318 465 l0 -5"/>` },
+      { p: 'HB', f: 2, t: 'Око маленьке й високо, майже на верхньому краю голови: капібара визирає з води, як бегемотик. Ніздря — на самому верху носа, рот — коротка лінія внизу. Лінія щелепи тягнеться до вуха.',
+        a: `<path class="l" d="M130 230 Q138 224 146 230 Q138 236 130 230 Z"/><circle class="fd" cx="138" cy="230" r="3.5"/><path class="l" d="M70 238 q5 -5 10 0 M64 284 Q80 292 98 286 M100 300 Q134 296 156 278 M124 216 Q134 210 148 214"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто й зітри допоміжні лінії. Шерсть у капібари жорстка й рідка, тому вздовж спини й боків додай ряди коротких рисок, наче щетину.',
+        a: `<path class="l" d="M214 240 l8 -3 M236 244 l8 -3 M258 240 l8 -2 M282 242 l8 -2 M306 246 l8 0 M330 256 l7 2 M352 272 l6 4 M368 296 l4 6 M226 262 l8 -2 M262 262 l8 -2 M300 266 l8 -1 M336 280 l7 1 M240 390 l6 6 M270 396 l6 6 M186 336 l-4 7 M184 312 l-4 7"/>` },
+      { p: '2B', f: 2, t: 'Капібара бура, тому легко заштрихуй її всю — це основний тон. Низ тулуба, щелепу й дальні ноги зроби темнішими олівцем 2B. Під капібарою — тінь на землі.',
+        tip: 'Спершу один рівний шар HB по всьому тілу, потім другий шар 2B тільки там, де тінь.',
+        a: `<path class="s1" d="M150 204 Q182 200 204 232 Q250 236 300 238 Q362 244 380 300 Q388 350 362 390 Q342 404 318 400 L300 398 Q258 406 200 392 L178 362 Q168 326 170 284 Q150 294 118 300 Q90 306 72 296 Q58 280 62 250 Q70 222 96 208 Q120 194 150 204 Z"/><path class="s2" d="M178 330 Q250 350 330 344 Q370 336 384 320 Q388 350 362 390 Q342 404 318 400 L300 398 Q258 406 200 392 L178 362 Z"/><path class="s2" d="M100 300 Q134 296 156 278 L170 284 Q150 294 118 300 Z"/><path class="s2" d="M214 392 L216 446 L232 446 L230 394 Z M340 382 L344 440 L360 440 L358 374 Z"/><ellipse class="s2" cx="250" cy="472" rx="160" ry="10"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою промокни світлу смугу вздовж спини — там на шерсть падає світло. І крихітний блиск в оці.',
+        a: `<path class="rf" d="M214 246 Q290 244 350 268" stroke-width="10"/><circle class="fw" cx="139.5" cy="228.5" r="1.4"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-капібара — пухкенька й дуже мила, дивиться прямо на нас. Голова — широкий овал, під ним ще ширший овал тулуба. Лінію очей проведи нижче центру голови.',
+        a: `<ellipse class="g" cx="210" cy="200" rx="95" ry="78"/><ellipse class="g" cx="210" cy="365" rx="105" ry="88"/><path class="g" d="M210 122 L210 278 M115 214 L305 214"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову: вона майже квадратна, з круглими кутами. Два маленькі круглі вушка згори з боків. Нижче лінії очей проведи широку пологу дугу — це великий пласкуватий ніс капібари.',
+        a: `<path class="l" d="M120 200 Q118 140 160 128 Q210 116 260 128 Q302 140 300 200 Q302 250 270 268 Q210 290 150 268 Q118 250 120 200"/><path class="l" d="M142 138 Q126 124 136 110 Q152 102 162 126 M278 138 Q294 124 284 110 Q268 102 258 126"/><path class="l" d="M166 244 Q210 222 254 244"/>` },
+      { p: '2B', f: 2, t: 'Очі великі й блискучі, трохи ширше за мордочку. Верх ока темний, низ світліший, два білі блиски — в обох очах з одного боку.',
+        tip: 'Блиски обведи кружечками одразу, до штрихування.',
+        a: aEye(160, 210, 20, 24, -1) + aEye(260, 210, 20, 24) },
+      { p: 'HB', f: 1, t: 'Дві ніздрі-крапочки й маленька усмішка. На щічках рум’янець. Тулуб — пухкий овал, передні лапки опущені вниз, внизу дві круглі ступні.',
+        a: `<ellipse class="fd" cx="194" cy="242" rx="5" ry="3.5"/><ellipse class="fd" cx="226" cy="242" rx="5" ry="3.5"/><path class="l" d="M200 260 Q210 268 220 260 M126 246 l6 -8 M134 250 l6 -8 M142 252 l6 -8 M272 252 l6 -8 M280 250 l6 -8 M288 246 l6 -8"/><path class="l" d="M140 264 Q102 320 110 390 Q118 440 160 452 L260 452 Q302 440 310 390 Q318 320 280 264 M160 330 Q170 380 176 440 M260 330 Q250 380 244 440"/><ellipse class="l" cx="178" cy="450" rx="24" ry="11"/><ellipse class="l" cx="242" cy="450" rx="24" ry="11"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжні зітри.', a: '' },
+      { p: 'HB', f: 1, t: 'Трохи тіні на вушках і правому боці, тінь під капібарою. Для аніме-настрою — листочки на голові та зірочки-блискітки.',
+        a: `<path class="s1" d="M142 138 Q126 124 136 110 Q152 102 162 126 Z M278 138 Q294 124 284 110 Q268 102 258 126 Z"/><path class="s1" d="M280 264 Q318 320 310 390 Q302 440 260 452 Q292 390 280 264 Z"/><ellipse class="s2" cx="210" cy="466" rx="120" ry="9"/><path class="l" d="${sparkle(345, 120, 14)} ${sparkle(76, 300, 9)} ${sparkle(352, 300, 7)} M232 122 q10 -16 24 -8 q-6 14 -24 8 M226 124 q-6 -14 -22 -10 q6 14 22 10"/>` }
+    ]}
+  }
+},
+/* ---------------- ПЕСИК ---------------- */
+{
+  id: 'dog', cat: 'animals', title: 'Песик', emoji: '🐶', box: '70 50 330 480',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Цуценя будуємо як котика: велике коло голови й овал тулуба під ним. Хрестик на голові допоможе поставити очі та ніс.',
+        a: `<circle class="g" cx="210" cy="200" r="80"/><ellipse class="g" cx="210" cy="385" rx="90" ry="100"/><path class="g" d="M210 118 L210 282 M128 196 L292 196"/>` },
+      { p: 'HB', f: 1, t: 'Голова кругла, трохи ширша внизу. Вуха довгі й висячі — як два листочки, що звисають з боків голови.',
+        a: `<path class="l" d="M142 168 Q150 120 210 118 Q270 120 278 168 Q292 230 262 268 Q236 288 210 288 Q184 288 158 268 Q128 230 142 168"/><path class="l" d="M150 142 Q110 128 98 170 Q90 220 110 250 Q128 264 142 242 Q150 200 154 164 M270 142 Q310 128 322 170 Q330 220 310 250 Q292 264 278 242 Q270 200 266 164"/>` },
+      { p: 'HB', f: 2, t: 'Очі — темні овали з білим блиском на лінії. Мордочка — овал унизу голови. Ніс великий, як перевернуте сердечко. Під ним ротик і висунутий язичок. Над очима — брівки-дужки.',
+        a: `<ellipse class="fd" cx="178" cy="196" rx="11" ry="14"/><ellipse class="fd" cx="242" cy="196" rx="11" ry="14"/><circle class="fw" cx="182" cy="190" r="4"/><circle class="fw" cx="246" cy="190" r="4"/><ellipse class="l" cx="210" cy="242" rx="42" ry="30"/><path class="fd" d="M194 228 Q210 218 226 228 Q226 240 210 244 Q194 240 194 228 Z"/><path class="l" d="M210 244 L210 252 M210 252 Q200 262 190 255 M210 252 Q220 262 230 255 M202 258 Q210 278 218 258 M166 174 q10 -6 22 0 M232 174 q10 -6 22 0"/>` },
+      { p: 'HB', f: 1, t: 'Тулуб і лапки — як у котика. На шиї нашийник із круглим жетоном. Збоку хвостик, що радісно метляє вгору.',
+        a: `<path class="l" d="M152 274 Q112 340 120 420 Q124 468 160 480 M268 274 Q308 340 300 420 Q296 468 260 480 M178 385 Q172 430 170 467 M200 395 Q205 430 208 467 M242 385 Q248 430 250 467 M220 395 Q215 430 212 467 M156 284 Q210 306 264 284 M158 296 Q210 318 262 296 M298 438 Q340 428 350 388 Q352 378 344 380 Q336 418 298 424 M180 485 L180 491 M192 486 L192 491 M228 486 L228 491 M240 485 L240 491"/><ellipse class="l" cx="187" cy="478" rx="26" ry="13"/><ellipse class="l" cx="233" cy="478" rx="26" ry="13"/><circle class="l" cx="210" cy="318" r="9"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи всі потрібні лінії впевнено, а допоміжні зітри клячкою.', a: '' },
+      { p: '2B', f: 2, t: 'Вушка темні — заштрихуй їх 2B. Навколо одного ока плямка — легкими штрихами, але саме око не зачіпай. Нашийник — сіткою штрихів. Правий бік тулуба й тінь на підлозі — як у котика.',
+        a: `<path class="s2" d="M150 142 Q110 128 98 170 Q90 220 110 250 Q128 264 142 242 Q150 200 154 164 Z M270 142 Q310 128 322 170 Q330 220 310 250 Q292 264 278 242 Q270 200 266 164 Z"/><path class="s1" fill-rule="evenodd" d="M268 194 A26 26 0 1 1 216 194 A26 26 0 1 1 268 194 Z M254 196 A12 15 0 1 0 230 196 A12 15 0 1 0 254 196 Z"/><path class="s1" d="M268 280 Q305 345 298 420 Q294 460 262 478 Q282 420 268 280 Z"/><path class="s3" d="M156 284 Q210 306 264 284 L262 296 Q210 318 158 296 Z"/><ellipse class="s2" cx="215" cy="501" rx="125" ry="11"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Сидячий пес будується з кіл, як котик, але морда в собаки довга: побудуй її як коробочку, що виступає вперед від кола голови. Далі — овал грудей, велике коло задньої частини й лінія землі.',
+        a: `<circle class="g" cx="215" cy="165" r="48"/><path class="g" d="M176 172 L128 180 L130 218 L180 214"/><ellipse class="g" cx="198" cy="288" rx="64" ry="72"/><circle class="g" cx="262" cy="410" r="86"/><path class="g" d="M170 150 L256 142 M40 510 L390 510"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову: лоб плавно переходить у довгу морду, внизу щелепа. Вухо висяче: звисає збоку голови м’яким трикутником. Друге вухо видно трохи з-за голови.',
+        a: `<path class="l" d="M250 128 Q230 110 200 116 Q176 122 170 148 Q152 160 134 170 Q124 176 124 188 Q126 212 150 218 Q170 222 184 218 Q202 230 224 224 M250 128 Q272 150 268 192"/><path class="l" d="M244 130 Q276 126 284 160 Q290 200 270 216 Q256 216 254 198 Q252 170 240 150 M194 120 Q178 108 170 122 Q166 136 174 146"/>` },
+      { p: 'HB', f: 2, t: 'Очі мигдалеві, над ними надбрівні дуги. Ніс — на самому кінчику морди, темний і вологий: зафарбуй його. Від носа вниз рисочка й лінія рота.',
+        a: `<path class="l" d="M178 150 Q186 143 196 150 Q186 157 178 150 Z M218 146 Q227 139 236 146 Q228 153 218 146 Z"/><circle class="fd" cx="187" cy="150" r="3.6"/><circle class="fd" cx="227" cy="146" r="3.4"/><path class="fd" d="M122 178 Q130 170 142 176 Q144 188 132 190 Q120 188 122 178 Z"/><path class="l" d="M134 190 L134 198 Q152 210 178 204 M174 142 q10 -7 24 -3 M214 137 q10 -6 24 -1"/>` },
+      { p: 'HB', f: 1, t: 'Груди виступають уперед, спина рівна. Передні лапи прямі й міцні, з великими округлими ступнями. Задня нога зігнута — видно стегно і ступню. Хвіст лежить на землі позаду.',
+        a: `<path class="l" d="M168 222 Q136 260 140 320 Q142 340 150 354 M268 192 Q300 250 318 320 Q352 372 344 440 Q336 490 300 506 M150 354 Q146 420 150 494 M176 362 Q174 426 176 494 M196 364 Q200 426 198 496 M222 350 Q228 420 224 496 M144 494 Q138 508 162 508 Q184 508 180 494 M192 496 Q188 509 210 509 Q232 509 228 496 M154 500 l0 8 M166 500 l0 8 M204 502 l0 7 M216 502 l0 7 M238 360 Q292 346 312 420 Q318 468 300 492 M268 506 Q288 492 318 500 Q328 508 306 512 Q282 513 268 506 M338 470 Q378 480 386 442 Q386 432 378 436 Q372 464 340 458"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжне зітри. Шерсть у пса коротка, тож штрихів-шерстинок мало: трохи на грудях і на спині.',
+        a: `<path class="l" d="M150 250 l-8 4 M144 274 l-8 3 M142 298 l-8 4 M180 226 l1 10 M194 230 l0 10 M282 206 l8 2 M296 244 l8 2 M308 284 l8 2"/>` },
+      { p: '2B', f: 2, t: 'Світло зліва. Спину й задню частину легко заштрихуй, край — темніше. Висяче вухо темне, під щелепою тінь, бік морди трохи сірий. Тонкі тіні на правому боці лап і під стегном, тінь на землі.',
+        a: `<path class="s1" d="M268 192 Q300 250 318 320 Q352 372 344 440 Q336 490 300 506 Q324 440 310 380 Q292 300 272 250 Z"/><path class="s3" d="M326 330 Q352 382 342 440 Q334 486 308 502 Q326 450 324 400 Q322 362 326 330 Z"/><path class="s2" d="M244 130 Q276 126 284 160 Q290 200 270 216 Q256 216 254 198 Q252 170 240 150 Z"/><path class="s2" d="M150 218 Q170 222 184 218 Q202 230 224 224 Q210 244 180 240 Q160 236 150 218 Z"/><path class="s1" d="M144 176 Q160 164 172 152 Q174 190 182 216 Q160 212 146 198 Z"/><path class="s2" d="M170 362 Q172 426 170 494 L176 494 Q174 426 176 362 Z M216 352 Q222 420 218 496 L224 496 Q228 420 222 350 Z M238 360 Q292 346 312 420 Q318 468 300 492 Q296 420 266 380 Q252 366 238 360 Z"/><ellipse class="s2" cx="236" cy="519" rx="150" ry="13"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою — блиск на носі й в очах, світла смуга вздовж спини. Вологий ніс блищить, і це робить малюнок живим.',
+        a: `<circle class="fw" cx="189" cy="148.5" r="1.3"/><circle class="fw" cx="229" cy="144.5" r="1.2"/><path class="fw" d="M126 177 q4 -4 9 -2 q-4 5 -9 2 Z"/><path class="rf" d="M272 214 Q292 270 304 330" stroke-width="8"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-песик у стилі сиба-іну: велика голова й маленьке тільце. Широкий овал голови, під ним невеликий овал. Лінію очей — нижче центру.',
+        a: `<ellipse class="g" cx="210" cy="205" rx="100" ry="80"/><ellipse class="g" cx="210" cy="365" rx="64" ry="76"/><path class="g" d="M210 125 L210 285 M112 234 L308 234"/>` },
+      { p: 'HB', f: 1, t: 'Вуха трикутні й стоять догори. Пухнасті щічки — зубчиками. Через лоб проведи хвилясту лінію: вище неї шерсть руда (її заштрихуємо), нижче — біла.',
+        a: `<path class="l" d="M118 182 Q110 110 140 72 Q170 98 186 126 M302 182 Q310 110 280 72 Q250 98 234 126 M186 126 Q210 120 234 126 M118 182 Q108 226 126 256 L118 266 L140 266 Q172 292 210 292 Q248 292 280 266 L302 266 L294 256 Q312 226 302 182"/><path class="l" d="M134 150 Q134 112 146 92 Q164 110 172 130 M286 150 Q286 112 274 92 Q256 110 248 130 M140 188 Q172 166 198 188 Q210 198 222 188 Q248 166 280 188"/>` },
+      { p: '2B', f: 2, t: 'Великі блискучі очі на лінії. Верхній край товстий, верх ока темний, низ світліший, два білі блиски.',
+        a: aEye(165, 236, 22, 26, -1) + aEye(255, 236, 22, 26) },
+      { p: 'HB', f: 1, t: 'Носик — маленьке сердечко, ротик у формі «w», рум’янець на щічках. Тільце маленьке, грудка пухнаста, а хвіст закручений бубликом — це прикмета сиба-іну!',
+        a: `<path class="fd" d="M200 258 Q210 252 220 258 Q216 266 210 267 Q204 266 200 258 Z"/><path class="l" d="M196 274 Q203 282 210 272 Q217 282 224 274 M128 266 l6 -8 M136 269 l6 -8 M144 271 l6 -8 M270 271 l6 -8 M278 269 l6 -8 M286 266 l6 -8"/><path class="l" d="M160 284 Q145 330 150 380 Q152 425 172 440 M260 284 Q275 330 270 380 Q268 425 248 440 M185 360 Q182 405 180 430 M200 365 Q204 405 206 432 M235 360 Q238 405 240 430 M220 365 Q216 405 214 432 M190 300 L196 312 L204 302 L210 316 L216 302 L224 312 L230 300 M262 396 Q322 398 324 350 Q324 318 298 318 Q282 324 292 340 Q306 350 298 368 Q290 382 268 382"/><ellipse class="l" cx="192" cy="440" rx="20" ry="11"/><ellipse class="l" cx="228" cy="440" rx="20" ry="11"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжні зітри.', a: '' },
+      { p: 'HB', f: 1, t: 'Легенько заштрихуй усе, що вище хвилястої лінії, — це руда шерсть. Хвіст і правий бік тулуба теж. Тінь унизу та зірочки.',
+        a: `<path class="s1" d="M140 188 Q172 166 198 188 Q210 198 222 188 Q248 166 280 188 L302 182 Q310 110 280 72 Q250 98 234 126 Q210 120 186 126 Q170 98 140 72 Q110 110 118 182 Z"/><path class="s1" d="M260 290 Q275 330 270 380 Q268 425 248 440 Q262 380 260 290 Z"/><path class="s1" d="M262 396 Q322 398 324 350 Q324 318 298 318 Q282 324 292 340 Q306 350 298 368 Q290 382 268 382 Z"/><ellipse class="s2" cx="212" cy="457" rx="95" ry="9"/><path class="l" d="${sparkle(345, 120, 14)} ${sparkle(78, 320, 8)} ${sparkle(360, 250, 6)}"/>` }
+    ]}
+  }
+},
+/* ---------------- СОВА ---------------- */
+{
+  id: 'owl', cat: 'animals', title: 'Сова', emoji: '🦉', box: '30 60 370 460',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Сова — як велике яйце. Намалюй вертикальний овал і проведи хрестик: лінія очей досить високо. Внизу — гілка, на якій сова сидить.',
+        a: `<ellipse class="g" cx="210" cy="300" rx="110" ry="140"/><path class="g" d="M210 160 L210 440 M100 240 L320 240 M40 452 L390 452"/>` },
+      { p: 'HB', f: 1, t: 'Обведи тіло. Згори — два вушка-пір’їнки, що стирчать гострими кутиками.',
+        a: `<path class="l" d="M140 192 Q110 250 108 320 Q110 400 160 438 Q210 452 260 438 Q310 400 312 320 Q310 250 280 192 M140 192 L126 140 L176 170 Q210 160 244 170 L294 140 L280 192"/>` },
+      { p: 'HB', f: 2, t: 'Очі в сови величезні: два великі кола поруч. Усередині — темні зіниці з білими блисками. Між очима знизу — дзьоб-трикутничок.',
+        a: `<circle class="l" cx="170" cy="240" r="40"/><circle class="l" cx="250" cy="240" r="40"/><circle class="fd" cx="173" cy="244" r="18"/><circle class="fd" cx="247" cy="244" r="18"/><circle class="fw" cx="180" cy="237" r="6"/><circle class="fw" cx="254" cy="237" r="6"/><path class="l" d="M200 272 L220 272 L210 294 Z"/>` },
+      { p: 'HB', f: 1, t: 'Крила — дві дуги з боків тіла. На животику ряди маленьких «галочок» — це пір’я. Лапки з трьома пальчиками тримаються за гілку, а на гілці — листочок.',
+        a: `<path class="l" d="M112 290 Q88 350 130 420 Q150 380 150 320 M308 290 Q332 350 290 420 Q270 380 270 320 M186 330 q7 7 14 0 M216 330 q7 7 14 0 M170 355 q7 7 14 0 M200 355 q7 7 14 0 M230 355 q7 7 14 0 M186 380 q7 7 14 0 M216 380 q7 7 14 0 M200 405 q7 7 14 0 M40 448 Q210 440 390 452 M40 466 Q210 458 390 470 M40 448 Q32 457 40 466 M184 438 l-6 14 M192 440 l0 14 M200 438 l6 14 M220 438 l-6 14 M228 440 l0 14 M236 438 l6 14 M330 452 q20 -30 45 -20 q-15 25 -45 20"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи все потрібне впевнено, допоміжні лінії зітри.', a: '' },
+      { p: '2B', f: 2, t: 'Крила й вушка заштрихуй темніше, олівцем 2B. Правий бік тіла — легенько. Низ гілки теж у тіні.',
+        a: `<path class="s2" d="M112 290 Q88 350 130 420 Q150 380 150 320 Z M308 290 Q332 350 290 420 Q270 380 270 320 Z M140 192 L126 140 L176 170 Z M280 192 L294 140 L244 170 Z"/><path class="s1" d="M280 192 Q310 250 312 320 Q310 400 260 438 Q296 380 292 300 Q290 240 280 192 Z"/><path class="s2" d="M40 466 Q210 458 390 470 L390 462 Q210 450 40 458 Z"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Справжня сова: голова велика й широка, тіло — видовжений овал під нею, шиї майже не видно. Хрестик на голові, гілка внизу.',
+        a: `<circle class="g" cx="210" cy="178" r="72"/><ellipse class="g" cx="210" cy="330" rx="88" ry="122"/><path class="g" d="M210 106 L210 250 M140 176 L280 176 M40 460 L390 460"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову з пір’яними «вухами» — насправді це не вуха, а пучки пір’я. Тіло широке внизу, хвіст звисає за гілку. На обличчі — лицевий диск: округла рамка навколо очей.',
+        a: `<path class="l" d="M156 132 L140 80 L178 118 Q210 108 242 118 L280 80 L264 132 M156 132 Q138 172 150 216 M264 132 Q282 172 270 216 M150 216 Q116 280 124 360 Q130 420 170 448 M270 216 Q304 280 296 360 Q290 420 250 448 M170 448 Q210 458 250 448 M192 452 L186 506 L210 512 L234 506 L228 452"/><path class="l" d="M148 160 Q150 232 210 242 Q270 232 272 160"/>` },
+      { p: 'HB', f: 2, t: 'Очі великі й круглі, дивляться прямо на нас. Райдужку легенько заштрихуй, зіниці темні. Над очима — V-подібні «брови» з пір’я, а між ними згори вниз — гачкуватий дзьоб.',
+        a: `<circle class="s1" cx="180" cy="176" r="17"/><circle class="s1" cx="240" cy="176" r="17"/><circle class="l" cx="180" cy="176" r="18"/><circle class="l" cx="240" cy="176" r="18"/><circle class="fd" cx="180" cy="177" r="9"/><circle class="fd" cx="240" cy="177" r="9"/><path class="l" d="M160 150 Q186 142 210 166 Q234 142 260 150 M204 192 Q210 186 216 192 L210 216 Z"/>` },
+      { p: 'HB', f: 1, t: 'Крила складені вздовж боків — проведи їх довгими дугами до самого низу. Груди вкриті рябим пір’ям: маленькі вертикальні рисочки з поперечками. Кігті тримаються за гілку.',
+        a: `<path class="l" d="M138 250 Q118 330 142 430 M282 250 Q302 330 278 430 M142 430 L150 400 L138 380 M278 430 L270 400 L282 380 ${owlMarks()} M186 446 l-6 14 M194 448 l0 14 M202 446 l6 14 M218 446 l-6 14 M226 448 l0 14 M234 446 l6 14 M36 458 Q210 450 392 462 M36 478 Q210 470 392 482 M36 458 Q28 468 36 478 M300 462 l30 -24 q10 -4 12 4"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжне зітри. На голові й на лицевому диску — короткі штрихи: так видно, що це пір’я.',
+        a: `<path class="l" d="M170 124 l4 10 M190 118 l2 10 M230 118 l-2 10 M250 124 l-4 10 M156 184 l8 2 M154 202 l8 1 M264 184 l-8 2 M266 202 l-8 1 M168 214 l6 4 M252 214 l-6 4"/>` },
+      { p: '2B', f: 2, t: 'Крила темніші — заштрихуй їх 2B, а правий (у тіні) ще темніше. Верх голови легко, по краю лицевого диска — темна облямівка. Хвіст і низ гілки в тіні.',
+        a: `<path class="s2" d="M150 216 Q116 280 124 360 Q130 420 170 448 L142 430 Q118 330 138 250 Z"/><path class="s3" d="M270 216 Q304 280 296 360 Q290 420 250 448 L278 430 Q302 330 282 250 Z"/><path class="s1" d="M156 132 L140 80 L178 118 Q210 108 242 118 L280 80 L264 132 Q272 148 272 160 Q240 140 210 160 Q180 140 148 160 Q150 144 156 132 Z"/><path class="s2" d="M148 160 Q150 232 210 242 Q270 232 272 160 L278 168 Q276 246 210 250 Q144 246 142 168 Z"/><path class="s2" d="M192 452 L186 506 L210 512 L234 506 L228 452 Z M204 192 Q210 186 216 192 L210 216 Z M36 478 Q210 470 392 482 L392 472 Q210 460 36 468 Z"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою — блиски в очах. Легко промокни груди зліва, куди падає світло.',
+        a: `<circle class="fw" cx="184" cy="172" r="3"/><circle class="fw" cx="244" cy="172" r="3"/><path class="rf" d="M160 262 Q150 330 158 400" stroke-width="8"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-сова — майже кулька! Намалюй велике коло й хрестик, лінію очей — посередині. Внизу гілка.',
+        a: `<circle class="g" cx="210" cy="265" r="128"/><path class="g" d="M210 137 L210 393 M82 266 L338 266 M40 412 L390 412"/>` },
+      { p: 'HB', f: 1, t: 'Тіло кругле, з двома вушками-кутиками згори. Через обличчя — лінія у формі сердечка: це межа личка сови.',
+        a: `<path class="l" d="M100 240 Q96 180 140 150 L136 108 L178 140 Q210 132 242 140 L284 108 L280 150 Q324 180 320 240 Q330 330 280 380 Q210 412 140 380 Q90 330 100 240"/><path class="l" d="M126 210 Q170 188 210 222 Q250 188 294 210"/>` },
+      { p: '2B', f: 2, t: 'Очі — найбільше, що є на малюнку. Верх темний, низ світліший, по два білі блиски. Не шкодуй розміру!',
+        a: aEye(162, 268, 30, 34, -1) + aEye(258, 268, 30, 34) },
+      { p: 'HB', f: 1, t: 'Дзьобик крихітний, щічки рожеві. Маленькі крильця з боків, кілька «галочок» на животику й лапки на гілці.',
+        a: `<path class="fd" d="M203 302 L217 302 L210 314 Z"/><path class="l" d="M118 312 l6 -8 M126 315 l6 -8 M134 317 l6 -8 M280 317 l6 -8 M288 315 l6 -8 M296 312 l6 -8 M106 282 Q84 322 110 354 Q124 332 122 302 M314 282 Q336 322 310 354 Q296 332 298 302 M186 342 q6 6 12 0 M210 342 q6 6 12 0 M174 362 q6 6 12 0 M198 362 q6 6 12 0 M222 362 q6 6 12 0 M40 406 Q210 398 390 408 M40 422 Q210 414 390 424 M186 392 l-5 12 M193 394 l0 12 M200 392 l5 12 M220 392 l-5 12 M227 394 l0 12 M234 392 l5 12"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжні зітри.', a: '' },
+      { p: 'HB', f: 1, t: 'Легенькі тіні на вушках і крильцях, трохи — під гілкою. Зірочки навколо — і аніме-сова готова!',
+        a: `<path class="s1" d="M140 150 L136 108 L178 140 Z M280 150 L284 108 L242 140 Z M106 282 Q84 322 110 354 Q124 332 122 302 Z M314 282 Q336 322 310 354 Q296 332 298 302 Z"/><path class="s1" d="M40 422 Q210 414 390 424 L390 416 Q210 406 40 414 Z"/><path class="l" d="${sparkle(352, 120, 14)} ${sparkle(68, 150, 9)} ${sparkle(362, 300, 7)}"/>` }
+    ]}
+  }
+},
+/* ---------------- РИБКА ---------------- */
+{
+  id: 'fish', cat: 'animals', title: 'Рибка', emoji: '🐟', box: '20 120 390 300',
+  defs: `<clipPath id="fishC"><path d="M72 282 Q78 205 180 196 Q262 196 306 262 L306 300 Q262 366 180 366 Q78 360 72 282 Z"/></clipPath>
+    <clipPath id="fishA"><path d="M100 270 Q100 185 190 180 Q262 180 278 240 L278 300 Q262 360 190 360 Q100 356 100 270 Z"/></clipPath>
+    <clipPath id="fishR"><path d="M44 272 Q60 236 110 222 Q200 200 290 238 Q320 250 340 262 L340 282 Q320 300 290 308 Q200 336 110 318 Q60 306 44 272 Z"/></clipPath>`,
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Рибка — це овал і трикутник. Великий лежачий овал — тіло, праворуч трикутник — хвіст. Проведи через тіло горизонтальну лінію.',
+        a: `<ellipse class="g" cx="190" cy="280" rx="120" ry="84"/><path class="g" d="M300 280 L382 212 L382 348 Z M60 280 L310 280"/>` },
+      { p: 'HB', f: 1, t: 'Обведи тіло й хвіст однією лінією. Хвіст з’єднується з тілом вузьким «перешийком». Дуга ближче до голови — це зябра.',
+        a: `<path class="l" d="M72 282 Q78 205 180 196 Q262 196 306 262 L372 212 Q390 208 386 226 L354 282 L386 338 Q390 356 372 352 L306 300 Q262 366 180 366 Q78 360 72 282"/><path class="l" d="M132 222 Q112 280 132 340"/>` },
+      { p: 'HB', f: 2, t: 'Велике кругле око з темною зіницею і блиском. Нижче — усміхнений ротик.',
+        a: `<circle class="l" cx="106" cy="258" r="20"/><circle class="fd" cx="108" cy="260" r="10"/><circle class="fw" cx="112" cy="255" r="4"/><path class="l" d="M76 300 Q88 306 98 296"/>` },
+      { p: 'HB', f: 1, t: 'Плавці: великий згори, маленький знизу й бічний посередині. На хвості три лінії. Лусочки — ряди маленьких дужок, як черепиця на даху.',
+        a: `<path class="l" d="M160 198 Q190 140 262 168 Q250 188 244 204 M188 364 Q208 402 240 396 Q236 378 232 362 M168 292 Q200 300 212 330 Q180 332 168 292 Z M322 270 L370 232 M324 282 L380 282 M322 294 L370 330"/><g clip-path="url(#fishC)"><path class="l" d="${scales(146, 226, 6, 5, 28, 26)}"/></g>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжне зітри. Додай бульбашки біля рота.',
+        a: `<circle class="l" cx="44" cy="214" r="9"/><circle class="l" cx="58" cy="182" r="5"/><circle class="l" cx="40" cy="150" r="11"/>` },
+      { p: '2B', f: 2, t: 'Плавці й хвіст легенько заштрихуй. Широку смугу посередині тіла зроби темнішою, олівцем 2B, як у рибки-клоуна.',
+        a: `<path class="s1" d="M160 198 Q190 140 262 168 Q250 188 244 204 Z M188 364 Q208 402 240 396 Q236 378 232 362 Z"/><path class="s1" d="M306 262 L372 212 Q390 208 386 226 L354 282 L386 338 Q390 356 372 352 L306 300 Z"/><path class="s2" d="M220 198 Q238 280 220 366 L248 362 Q264 280 248 200 Z"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Справжня риба — окунь — видовжена. Довгий овал тіла, праворуч хвіст. Горизонтальна вісь посередині допоможе розставити плавці.',
+        a: `<ellipse class="g" cx="195" cy="270" rx="152" ry="58"/><path class="g" d="M338 272 L390 222 L390 322 Z M36 272 L392 272"/>` },
+      { p: 'HB', f: 1, t: 'Обведи тіло: спина вигнута вище, черево рівніше. Хвіст роздвоєний. Рот — коротка лінія на кінчику голови.',
+        a: `<path class="l" d="M44 272 Q60 236 110 222 Q200 200 290 238 Q320 250 340 262 L386 222 Q394 228 388 240 L374 272 L388 304 Q394 318 386 322 L340 282 Q320 300 290 308 Q200 336 110 318 Q60 306 44 272 M44 272 L64 276"/>` },
+      { p: 'HB', f: 2, t: 'Зяброва кришка — дві дуги позаду голови. Око кругле й темне, трохи вище осі.',
+        a: `<path class="l" d="M112 226 Q96 272 116 316 M96 234 Q86 272 100 306"/><circle class="l" cx="78" cy="258" r="11"/><circle class="fd" cx="79" cy="258" r="6"/>` },
+      { p: 'HB', f: 1, t: 'Спинний плавець колючий — з тонкими «променями». Грудний плавець біля зябер, знизу ще два маленькі. Бічна лінія йде від зябер до хвоста.',
+        a: `<path class="l" d="M140 214 L162 168 L246 184 L266 228 M162 208 L164 174 M184 204 L186 176 M206 202 L210 180 M228 204 L232 184 M248 212 L250 192 M120 286 Q150 300 162 322 Q130 318 120 286 Z M180 320 L196 352 L214 322 M260 306 L280 334 L302 300 M346 268 L386 228 M346 272 L380 262 M346 278 L380 282 M346 282 L386 316 M112 262 Q210 256 336 270"/>` },
+      { p: 'HB', f: 1, ink: true, erase: true, t: 'Обведи начисто, допоміжне зітри. Лусочки — дрібні дужки рядами зі зсувом, як черепиця. Тонкою лінією, не тисни.',
+        a: `<g clip-path="url(#fishR)"><path class="l" style="stroke-width:1.2" d="${scales(118, 214, 11, 6, 20, 18)}"/></g>` },
+      { p: '2B', f: 2, t: 'Спина темна, боки сірі, черево світле — так виглядають майже всі риби. Поперечні смуги окуня — темніше, олівцем 2B. Плавці — легенько.',
+        a: `<path class="s2" d="M44 272 Q60 236 110 222 Q200 200 290 238 Q320 250 340 262 Q260 246 180 244 Q100 248 44 272 Z"/><path class="s1" d="M44 272 Q100 248 180 244 Q260 246 340 262 L340 282 Q260 276 180 282 Q100 286 44 272 Z"/><path class="s2" d="M160 212 Q152 260 160 322 L174 324 Q166 260 176 210 Z M210 206 Q202 262 210 326 L224 324 Q216 262 226 208 Z M262 226 Q254 266 262 310 L274 306 Q268 266 276 232 Z"/><path class="s1" d="M140 214 L162 168 L246 184 L266 228 Z M120 286 Q150 300 162 322 Q130 318 120 286 Z M340 262 L386 222 Q394 228 388 240 L374 272 L388 304 Q394 318 386 322 L340 282 Z"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою — блиск в оці й світла смуга вздовж тіла: луска блищить.',
+        a: `<circle class="fw" cx="81" cy="255" r="2"/><path class="rf" d="M70 262 Q150 238 280 246" stroke-width="7"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-рибка кругленька, з довгим пишним хвостом, як сукня. Коло — тіло, праворуч високий овал для хвоста.',
+        a: `<circle class="g" cx="190" cy="270" r="90"/><ellipse class="g" cx="335" cy="265" rx="58" ry="92"/><path class="g" d="M90 270 L290 270"/>` },
+      { p: 'HB', f: 1, t: 'Обведи кругле тільце і хвіст із трьох хвилястих «пелюсток».',
+        a: `<path class="l" d="M100 270 Q100 185 190 180 Q262 180 278 240 Q300 190 350 170 Q382 164 372 192 Q352 214 342 240 Q390 232 400 262 Q386 282 344 280 Q382 300 386 340 Q376 366 350 346 Q310 322 278 300 Q262 360 190 360 Q100 356 100 270"/>` },
+      { p: '2B', f: 2, t: 'Одне велике аніме-око: верх темний, низ світліший, два блиски.',
+        a: aEye(150, 258, 26, 30) },
+      { p: 'HB', f: 1, t: 'Ротик і рум’янець. Плавці довгі й м’які, наче стрічки. На хвості — лінії, що розходяться віялом, і кілька лусочок на тілі.',
+        a: `<path class="l" d="M104 296 Q112 302 120 294 M132 308 l6 -8 M140 311 l6 -8 M148 313 l6 -8 M170 184 Q188 128 240 140 Q232 162 236 186 M200 358 Q220 402 252 394 Q242 376 238 352 M200 292 Q232 298 238 322 Q210 322 200 292 Z M296 258 Q338 214 356 186 M296 270 Q350 262 390 262 M296 284 Q340 310 370 342"/><g clip-path="url(#fishA)"><path class="l" d="${scales(206, 214, 4, 4, 22, 22)}"/></g>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжні зітри.', a: '' },
+      { p: 'HB', f: 1, t: 'Легенько заштрихуй плавці й хвіст. Навколо — бульбашки й блискітки.',
+        a: `<path class="s1" d="M170 184 Q188 128 240 140 Q232 162 236 186 Z M200 358 Q220 402 252 394 Q242 376 238 352 Z"/><path class="s1" d="M278 240 Q300 190 350 170 Q382 164 372 192 Q352 214 342 240 Q390 232 400 262 Q386 282 344 280 Q382 300 386 340 Q376 366 350 346 Q310 322 278 300 Z"/><circle class="l" cx="70" cy="200" r="9"/><circle class="l" cx="80" cy="168" r="5"/><path class="l" d="${sparkle(60, 130, 11)} ${sparkle(300, 130, 8)} ${sparkle(120, 410, 7)}"/>` }
+    ]}
+  }
+},
+/* ---------------- ПОНІ ---------------- */
+{
+  id: 'pony', cat: 'animals', title: 'Поні', emoji: '🐴', box: '30 60 380 440',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Поні збоку. Коло — голова, овал на ньому знизу зліва — мордочка. Праворуч нижче — лежачий овал тулуба. Дві лінії шиї з’єднують голову з тулубом.',
+        a: `<circle class="g" cx="140" cy="190" r="62"/><ellipse class="g" cx="100" cy="228" rx="40" ry="32"/><ellipse class="g" cx="262" cy="330" rx="98" ry="64"/><path class="g" d="M190 160 L236 272 M160 240 L172 300 M40 478 L390 478"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову з круглою мордочкою, шию й тулуб. Вушко — гострий листочок на маківці.',
+        a: `<path class="l" d="M118 132 Q170 118 196 160 Q206 196 184 226 Q160 256 118 260 Q70 262 62 228 Q60 198 90 178 Q98 150 118 132 M196 160 Q232 200 242 268 M172 246 Q182 272 172 300 M172 300 Q152 330 170 370 Q200 395 260 392 Q330 395 346 350 Q356 300 320 272 Q280 258 242 268 M166 132 L180 96 L194 146"/>` },
+      { p: 'HB', f: 2, t: 'Велике око з темною зіницею і блиском, над ним вії. На мордочці ніздря й усмішка, на щоці рум’янець.',
+        a: `<ellipse class="l" cx="140" cy="190" rx="14" ry="18"/><ellipse class="fd" cx="138" cy="193" rx="9" ry="12"/><circle class="fw" cx="142" cy="187" r="4"/><path class="l" d="M127 176 l-8 -6 M130 172 l-5 -9 M78 222 q5 -4 9 0 M84 244 Q98 252 110 244 M150 228 l6 -8 M158 230 l6 -8 M166 231 l6 -8"/>` },
+      { p: 'HB', f: 1, t: 'Грива — пишні хвилі від маківки вздовж шиї, чубчик спадає на лоб. Хвіст — велике хвилясте пасмо. Чотири ноги-стовпчики з копитцями внизу.',
+        a: `<path class="l" d="M150 122 Q196 96 222 138 Q236 170 252 196 Q268 230 250 262 Q246 240 232 228 Q236 250 220 262 Q218 230 206 206 Q200 180 196 160 M128 136 Q140 118 160 124 Q152 140 148 158 Q138 146 128 136 M346 320 Q392 330 394 380 Q396 430 360 450 Q376 420 370 390 Q364 360 342 352 M184 388 L184 460 M206 392 L206 460 M180 460 L210 460 L212 476 L178 476 Z M216 392 L218 456 M236 392 L238 456 M214 456 L242 456 L244 470 L212 470 Z M296 390 L296 460 M320 384 L320 460 M292 460 L324 460 L326 476 L290 476 Z M332 376 L338 454 M348 362 L354 452 M334 454 L358 452 L360 466 L334 468 Z"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи всі потрібні лінії впевнено, а допоміжні зітри клячкою.', a: '' },
+      { p: '2B', f: 2, t: 'Гриву й хвіст заштрихуй легкими штрихами вздовж пасом. Копитця — темніше, низ живота — ледь-ледь, тінь під поні. На боці можна намалювати сердечко.',
+        a: `<path class="s1" d="M150 122 Q196 96 222 138 Q236 170 252 196 Q268 230 250 262 Q246 240 232 228 Q236 250 220 262 Q218 230 206 206 Q200 180 196 160 Z M128 136 Q140 118 160 124 Q152 140 148 158 Z M346 320 Q392 330 394 380 Q396 430 360 450 Q376 420 370 390 Q364 360 342 352 Z"/><path class="s3" d="M180 460 L210 460 L212 476 L178 476 Z M214 456 L242 456 L244 470 L212 470 Z M292 460 L324 460 L326 476 L290 476 Z M334 454 L358 452 L360 466 L334 468 Z"/><path class="s1" d="M172 300 Q152 330 170 370 Q200 395 260 392 Q330 395 346 350 Q300 380 240 376 Q190 372 172 300 Z"/><ellipse class="s2" cx="270" cy="482" rx="140" ry="9"/><path class="l" d="M292 326 q-8 -10 -15 -2 q-4 8 15 20 q19 -12 15 -20 q-7 -8 -15 2 Z"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Справжня конячка будується з кіл: коло грудей і коло крупа (задньої частини) майже однакові, між ними спина. Голова — два кола: більше для лоба, менше для морди, з’єднані лініями. Шия товста. Кружечками познач коліна — вони на однаковій висоті.',
+        tip: 'Від спини до землі — приблизно дві висоти тулуба. Ноги в коня довші, ніж здається.',
+        a: `<circle class="g" cx="150" cy="300" r="55"/><circle class="g" cx="312" cy="295" r="58"/><circle class="g" cx="120" cy="148" r="30"/><circle class="g" cx="74" cy="206" r="20"/><path class="g" d="M100 130 L60 196 M142 170 L90 222 M130 130 L222 240 M150 180 L112 262 M40 484 L395 484"/><circle class="g" cx="126" cy="400" r="6"/><circle class="g" cx="170" cy="400" r="6"/><circle class="g" cx="324" cy="398" r="6"/><circle class="g" cx="358" cy="398" r="6"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову: лоб і пряма морда клином донизу. Товста шия вигинається дугою від вух до спини. Спина рівна, круп заокруглений, груди виступають уперед, живіт — пологою дугою.',
+        a: `<path class="l" d="M112 124 Q88 150 72 185 Q60 200 58 212 Q60 226 74 228 Q88 230 94 222 Q110 206 122 196 Q148 188 156 170 M130 118 Q150 128 160 150 M132 120 Q190 140 222 238 M156 172 Q150 220 118 262 M222 238 Q270 244 300 240 Q350 236 368 270 Q376 300 364 330 M118 262 Q96 290 110 330 M150 350 Q230 368 312 346 M116 122 L112 94 L128 116"/>` },
+      { p: 'HB', f: 1, t: 'Ноги тонкі, з вузлуватими колінами. Передня нога пряма, задня — з гострим скакальним суглобом, схожим на п’ятку. Дальні ноги малюй трохи позаду. Внизу — копита.',
+        a: `<path class="l" d="M110 330 Q116 360 120 394 L122 450 Q122 462 116 470 L112 480 L138 482 L136 468 Q138 458 138 448 L138 400 Q140 372 150 352 M160 354 L164 398 L166 448 L162 474 L180 476 L178 448 L178 398 L176 356 M364 330 Q358 368 366 398 L364 452 L372 478 L346 478 L344 452 L344 398 Q334 372 312 346 M300 348 Q312 380 318 400 L318 448 L314 472 L332 472 L330 448 L330 398 M114 472 L138 474 M346 470 L370 470 M162 468 L180 470 M314 466 L332 466"/>` },
+      { p: 'HB', f: 2, t: 'Око мигдалеве, трохи нижче лоба. Ніздря на кінчику морди, рот — коротка лінія. Грива лежить уздовж шиї: проведи її край і пасма косими штрихами. Хвіст спадає донизу хвилею.',
+        a: `<path class="l" d="M110 150 Q118 144 126 150 Q118 156 110 150 Z M66 204 q5 -6 10 0 M62 222 L80 222 M126 114 Q180 118 208 180 Q220 210 226 236 M140 128 l-8 20 M156 142 l-10 22 M170 160 l-10 22 M184 182 l-10 20 M198 204 l-8 18 M116 122 Q104 136 106 150 M368 262 Q398 280 400 330 Q402 380 388 410 Q378 380 380 340 Q378 300 364 280"/><circle class="fd" cx="118" cy="150" r="3.5"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжні кола зітри. Кілька м’яких ліній показують м’язи: на плечі, на крупі й на шиї.',
+        a: `<path class="l" d="M130 290 Q140 316 150 340 M300 276 Q322 300 330 330 M178 172 Q176 200 164 226"/>` },
+      { p: '2B', f: 2, t: 'Дальні ноги, гриву й хвіст зроби темнішими — 2B. Під животом смуга тіні, під шиєю легка тінь. Копита темні. Тінь на землі.',
+        a: `<path class="s2" d="M160 354 L164 398 L166 448 L162 474 L180 476 L178 448 L178 398 L176 356 Z M300 348 Q312 380 318 400 L318 448 L314 472 L332 472 L330 448 L330 398 L316 350 Z"/><path class="s2" d="M126 114 Q180 118 208 180 Q220 210 226 236 L222 238 Q190 140 132 120 Z M368 262 Q398 280 400 330 Q402 380 388 410 Q378 380 380 340 Q378 300 364 280 Z"/><path class="s2" d="M150 350 Q230 368 312 346 Q300 330 250 336 Q200 340 150 336 Z"/><path class="s1" d="M156 172 Q150 220 118 262 Q146 236 166 206 Z M364 330 Q376 300 368 270 Q384 300 374 340 Z"/><path class="s3" d="M112 480 L138 482 L136 468 L116 470 Z M346 478 L372 478 L370 468 L346 470 Z"/><ellipse class="s2" cx="240" cy="488" rx="170" ry="10"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою — блиск в оці й світла смуга вздовж спини: шерсть у коня коротка й блискуча.',
+        a: `<circle class="fw" cx="119.5" cy="148.5" r="1.3"/><path class="rf" d="M230 246 Q290 246 350 252" stroke-width="8"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-поні: голова величезна, майже як усе тіло. Велике коло голови, праворуч унизу — невеликий овал тулуба.',
+        a: `<circle class="g" cx="160" cy="200" r="85"/><ellipse class="g" cx="276" cy="360" rx="80" ry="52"/><path class="g" d="M220 262 L232 310 M40 454 L390 454"/>` },
+      { p: 'HB', f: 1, t: 'Обведи голову з округлою мордочкою, гостре вушко згори. Коротка шия переходить у маленький тулуб.',
+        a: `<path class="l" d="M130 122 Q200 104 236 160 Q250 206 226 250 Q196 284 146 286 Q86 286 72 246 Q64 214 92 186 Q104 146 130 122 M196 122 L214 80 L228 144 M226 250 Q234 282 222 310 M222 310 Q204 340 220 380 Q248 402 300 400 Q348 398 354 360 Q358 320 322 306 Q282 296 246 280"/>` },
+      { p: '2B', f: 2, t: 'Одне величезне аніме-око — майже на пів голови. Верх темний, низ світліший, два білі блиски, товсті вії. Унизу ніздря, ротик і рум’янець.',
+        a: aEye(168, 208, 28, 34) + `<path class="l" d="M82 242 q4 -4 8 0 M88 262 Q100 270 112 262 M124 262 l6 -8 M132 264 l6 -8 M140 265 l6 -8"/>` },
+      { p: 'HB', f: 1, t: 'Грива дуже пишна: великі хвилі й чубчик на лобі, всередині — кілька ліній-пасом. Ніжки коротенькі з копитцями, хвіст закручений. На боці — зірочка.',
+        a: `<path class="l" d="M118 126 Q170 80 232 110 Q270 140 264 200 Q290 230 274 272 Q264 252 250 246 Q258 272 238 292 Q236 262 228 246 M114 128 Q150 116 168 140 Q150 150 142 172 Q130 150 114 128 M150 104 Q200 100 226 140 M236 124 Q256 160 252 200 M354 340 Q398 346 396 390 Q394 430 364 440 Q380 410 372 386 Q364 364 346 368 M236 390 L236 438 M256 396 L256 438 M232 438 L260 438 L262 452 L230 452 Z M318 394 L318 436 M338 386 L338 436 M314 436 L342 436 L344 450 L312 450 Z ${sparkle(300, 350, 13)}"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжні зітри.', a: '' },
+      { p: 'HB', f: 1, t: 'Легенько заштрихуй гриву й хвіст, копитця — темніше. Тінь унизу й блискітки навколо.',
+        a: `<path class="s1" d="M118 126 Q170 80 232 110 Q270 140 264 200 Q290 230 274 272 Q264 252 250 246 Q258 272 238 292 Q236 262 228 246 Q242 200 230 160 Q210 124 168 140 Q150 116 118 126 Z M354 340 Q398 346 396 390 Q394 430 364 440 Q380 410 372 386 Q364 364 346 368 Z"/><path class="s3" d="M232 438 L260 438 L262 452 L230 452 Z M314 436 L342 436 L344 450 L312 450 Z"/><ellipse class="s2" cx="290" cy="458" rx="100" ry="8"/><path class="l" d="${sparkle(350, 130, 14)} ${sparkle(60, 120, 9)} ${sparkle(80, 360, 7)}"/>` }
+    ]}
+  }
+},
+/* ---------------- ОБЛИЧЧЯ ---------------- */
+{
+  id: 'face', cat: 'people', title: 'Обличчя', emoji: '🙂', box: '60 70 300 460',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Мультяшне обличчя — це майже коло. Намалюй велике коло і проведи через нього вертикальну лінію та дві горизонтальні: лінію очей трохи нижче середини і лінію рота ще нижче. Так обличчя вийде симетричним.',
+        tip: 'У мультяшних персонажів очі нижче середини голови — так обличчя виглядає милішим і молодшим.',
+        a: `<circle class="g" cx="210" cy="250" r="115"/><path class="g" d="M210 120 L210 400 M95 272 L325 272 M150 334 L270 334"/>` },
+      { p: 'HB', f: 1, t: 'Обведи обличчя: згори кругле, донизу трохи звужується до м’якого підборіддя. Вушка — на рівні очей з обох боків. Шия — дві лінії вниз, а від них плечі розходяться в сторони.',
+        a: `<path class="l" d="M100 250 Q100 140 210 132 Q320 140 320 250 Q322 330 280 368 Q248 392 210 392 Q172 392 140 368 Q98 330 100 250 M102 262 Q80 256 82 286 Q86 312 112 308 M318 262 Q340 256 338 286 Q334 312 308 308 M176 388 L174 446 M244 388 L246 446 M174 446 Q112 456 82 520 M246 446 Q308 456 338 520"/>` },
+      { p: 'HB', f: 2, t: 'Очі — великі темні овали на лінії очей, між ними відстань ще на одне око. Залиш у кожному по два білі блиски. Над очима — брівки-дужки.',
+        a: `<ellipse class="fd" cx="165" cy="272" rx="15" ry="19"/><ellipse class="fd" cx="255" cy="272" rx="15" ry="19"/><circle class="fw" cx="170" cy="265" r="5"/><circle class="fw" cx="260" cy="265" r="5"/><circle class="fw" cx="160" cy="280" r="2.5"/><circle class="fw" cx="250" cy="280" r="2.5"/><path class="l" d="M142 236 Q165 224 188 234 M232 234 Q255 224 278 238"/>` },
+      { p: 'HB', f: 1, t: 'Носик — маленька гачечка між очима й ротом. Рот — усмішка на лінії рота. На щічках рум’янець-рисочки.',
+        a: `<path class="l" d="M204 304 Q212 310 206 314 M184 332 Q210 356 236 332 M128 318 l7 -9 M137 321 l7 -9 M146 323 l7 -9 M270 323 l7 -9 M279 321 l7 -9 M288 318 l7 -9"/>` },
+      { p: 'HB', f: 1, t: 'Зачіска-каре: зовнішня лінія волосся трохи ширша за голову. Чубчик — хвилястий, кілька дуг на лобі. Волосся закінчується над вушками.',
+        a: `<path class="l" d="M92 262 Q78 110 210 100 Q342 110 328 262 L316 250 Q314 214 300 196 Q280 192 262 158 Q250 168 226 192 Q194 200 172 170 Q150 200 126 184 Q106 200 104 250 Z M210 104 Q190 130 172 170 M232 106 Q252 130 262 158"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи всі потрібні лінії впевнено, а допоміжне коло й лінії зітри клячкою.', a: '' },
+      { p: '2B', f: 2, t: 'Волосся заштрихуй легко, штрихами вздовж пасом. Під підборіддям на шиї — тінь 2B. Правий край щоки — ледь-ледь. Клячкою зроби на волоссі світлу смугу — блиск.',
+        a: `<path class="s1" d="M92 262 Q78 110 210 100 Q342 110 328 262 L316 250 Q314 214 300 196 Q280 192 262 158 Q250 168 226 192 Q194 200 172 170 Q150 200 126 184 Q106 200 104 250 Z"/><path class="s2" d="M176 388 Q210 404 244 388 L245 414 Q210 426 175 414 Z"/><path class="s1" d="M302 252 Q322 262 318 302 Q310 350 276 372 Q302 320 302 252 Z"/><path class="rf" d="M140 138 Q210 114 280 138" stroke-width="9"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Справжнє обличчя має чіткі пропорції. Намалюй овал, трохи вужчий унизу, і вертикальну лінію посередині. Лінія очей — рівно на середині голови. Ніс — на половині відстані від очей до підборіддя. Рот — на третину нижче носа. Лінія брів трохи вища за лінію очей.',
+        tip: 'Найпоширеніша помилка — очі занадто високо. У справжньої людини вони якраз на середині голови, бо зверху ще є лоб і волосся.',
+        a: `<path class="g" d="M110 260 Q110 112 210 112 Q310 112 310 260 Q310 350 272 386 Q242 410 210 410 Q178 410 148 386 Q110 350 110 260 Z M210 104 L210 418 M100 262 L320 262 M130 234 L290 234 M150 330 L270 330 M160 356 L260 356"/>`,
+        ot: `<g class="lbls"><text class="sm" x="324" y="238">брови</text><text class="sm" x="324" y="266">очі</text><text class="sm" x="324" y="334">ніс</text><text class="sm" x="324" y="360">рот</text></g>` },
+      { p: 'HB', f: 1, t: 'Правило «п’яти очей»: ширина обличчя на лінії очей — п’ять очей. Розділи лінію очей на 5 рівних частин: друга й четверта — це очі, між ними якраз одне око. Вуха — між лінією брів і лінією носа.',
+        a: `<path class="g" d="M150 254 L150 270 M190 254 L190 270 M230 254 L230 270 M270 254 L270 270"/>`,
+        ot: `<g class="lbls">${row((x, i) => `<text class="sm" x="${x}" y="250">${i + 1}</text>`, [126, 166, 206, 246, 286])}</g>` },
+      { p: 'HB', f: 1, t: 'Обведи форму обличчя: скроні, вилиці, щелепа плавно сходяться до підборіддя. Вуха — між лінією брів і носа. Шия починається під вухами, від неї — плечі.',
+        a: `<path class="l" d="M112 256 Q114 330 140 370 Q170 404 210 408 Q250 404 280 370 Q306 330 308 256 M112 238 Q94 230 94 262 Q96 300 116 320 M308 238 Q326 230 326 262 Q324 300 304 320 M104 250 Q100 244 108 244 M316 250 Q320 244 312 244 M162 392 L164 472 M258 392 L256 472 M164 472 Q120 482 80 512 M256 472 Q300 482 340 512"/>` },
+      { p: 'HB', f: 2, t: 'Очі — мигдалики на своїх місцях (друга й четверта частини). Райдужка — коло, верхня повіка трохи її прикриває. Над оком — складка повіки. Брови — на лінії брів: товщі біля носа, тонші до скроні.',
+        a: `<path class="l" d="M150 262 Q170 246 190 262 Q170 272 150 262 Z M230 262 Q250 246 270 262 Q250 272 230 262 Z M152 252 Q170 240 188 252 M232 252 Q250 240 268 252"/><circle class="s1" cx="170" cy="261" r="8.5"/><circle class="s1" cx="250" cy="261" r="8.5"/><circle class="fd" cx="170" cy="261" r="4"/><circle class="fd" cx="250" cy="261" r="4"/><path class="l k" d="M146 238 Q168 226 192 234 M228 234 Q252 226 274 238 M152 260 Q170 250 188 260 M232 260 Q250 250 268 260"/>` },
+      { p: 'HB', f: 2, t: 'Ніс малюємо не контуром, а натяком: легкі лінії спинки й основа носа з ніздрями на лінії носа. Рот на лінії рота: верхня губа — «галочкою», лінія між губами — найтемніша, нижня губа — лише знизу коротка дуга.',
+        a: `<path class="l" d="M198 268 Q196 300 190 318 M190 322 Q196 332 204 328 Q210 334 216 328 Q224 332 230 322 M198 326 q4 -3 7 0 M215 326 q4 -3 7 0 M184 356 Q196 348 204 352 Q210 350 216 352 Q224 348 236 356 M194 368 Q210 378 226 368 M205 336 L204 348 M215 336 L216 348 M200 392 Q210 396 220 392"/><path class="l k" d="M184 356 Q210 362 236 356"/>` },
+      { p: 'HB', f: 1, t: 'Волосся: спершу загальна форма — волосся «сидить» на голові, тому зовнішня лінія ширша за голову. Лінія росту волосся — на лобі. Далі кілька ліній-пасом від проділу.',
+        a: `<path class="l" d="M104 270 Q90 100 216 96 Q330 100 316 270 M118 232 Q140 150 216 146 Q280 150 302 232 M104 270 Q100 350 120 440 M316 270 Q322 350 300 440 M216 98 Q170 110 140 190 M216 98 Q260 110 290 190 M182 112 Q144 140 126 226 M252 108 Q290 140 300 226"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжні лінії й цифри зітри. Додай вії — короткі штрихи на верхній повіці, що загинаються назовні.',
+        a: `<path class="l" d="M152 258 l-6 -5 M158 253 l-4 -6 M164 250 l-2 -6 M268 258 l6 -5 M262 253 l4 -6 M256 250 l2 -6"/>` },
+      { p: '2B', f: 2, t: 'Тіні. Світло зліва: правий бік обличчя легко заштрихуй. Трохи тіні біля перенісся, під носом і під нижньою губою. Під підборіддям на шиї — темна тінь 2B. Волосся — штрихами вздовж пасом, біля обличчя темніше.',
+        tip: 'На обличчі тіні дуже м’які. Штрихуй легко і розтирай серветкою — тоді шкіра виглядає гладкою.',
+        a: `<path class="s1" d="M282 250 Q308 260 306 300 Q300 350 272 384 Q292 330 292 290 Q290 262 282 250 Z"/><path class="s1" d="M192 256 Q198 266 198 290 Q192 272 188 262 Z M228 256 Q222 266 222 290 Q228 272 232 262 Z"/><path class="s2" d="M194 330 Q210 342 226 330 Q210 336 194 330 Z M196 380 Q210 386 224 380 Q210 390 196 380 Z"/><path class="s1" d="M186 356 Q196 350 204 353 Q210 351 216 353 Q224 350 234 356 Q210 360 186 356 Z"/><path class="s2" d="M162 392 Q210 432 258 392 L258 424 Q210 450 164 424 Z"/><path class="s1" d="M104 270 Q90 100 216 96 Q330 100 316 270 Q322 350 300 440 L292 300 Q300 240 302 232 Q280 150 216 146 Q140 150 118 232 Q126 300 120 440 Q100 350 104 270 Z"/><path class="s2" d="M118 232 Q112 300 120 440 Q108 360 106 280 Z M302 232 Q312 300 300 440 Q314 360 314 280 Z"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою — білі блиски в очах (обидва з одного боку), маленький блиск на кінчику носа і на нижній губі. Легко промокни смугу на волоссі.',
+        a: `<circle class="fw" cx="173" cy="258" r="2.4"/><circle class="fw" cx="253" cy="258" r="2.4"/><ellipse class="fw" cx="210" cy="318" rx="5" ry="3"/><path class="rf" d="M200 372 Q210 374 220 372" stroke-width="4"/><path class="rf" d="M150 150 Q210 118 276 150" stroke-width="8"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-обличчя будуємо з кола й трикутника: коло — голова, від нього вниз два відрізки сходяться в гостре підборіддя. Лінія очей — нижче середини кола.',
+        a: `<circle class="g" cx="210" cy="230" r="108"/><path class="g" d="M112 250 L210 404 L308 250 M210 110 L210 404 M100 290 L320 290"/>` },
+      { p: 'HB', f: 1, t: 'Обведи обличчя: щоки плавні, підборіддя загострене. Тонка шия і плечі.',
+        a: `<path class="l" d="M104 232 Q104 330 150 372 Q186 400 210 404 Q234 400 270 372 Q316 330 316 232 M186 396 L188 458 M234 396 L232 458 M188 458 Q130 468 96 520 M232 458 Q290 468 324 520"/>` },
+      { p: '2B', f: 2, t: 'Великі аніме-очі: кожне займає майже чверть ширини обличчя. Верх темний, низ світліший, по два блиски. Брови тонкі й високо.',
+        tip: 'Блиски в обох очах — з одного боку, звідки падає світло.',
+        a: aEye(160, 290, 30, 36, -1) + aEye(260, 290, 30, 36) + `<path class="l" d="M132 240 Q156 232 182 242 M238 242 Q264 232 288 240"/>` },
+      { p: 'HB', f: 1, t: 'Ніс в аніме — лише маленька рисочка, рот — коротка дужка. На щоках рум’янець.',
+        a: `<path class="l" d="M212 338 l-3 8 M200 368 Q210 374 220 368 M124 340 l7 -9 M133 343 l7 -9 M142 345 l7 -9 M272 345 l7 -9 M281 343 l7 -9 M290 340 l7 -9"/>` },
+      { p: 'HB', f: 1, t: 'Волосся в аніме — гострими пасмами. Спершу загальна форма, довге волосся спадає нижче плечей. Чубчик — зигзагом із гострих пасом, два пасма обрамляють обличчя. І кумедна «антенка» на маківці.',
+        a: `<path class="l" d="M92 262 Q70 90 210 84 Q350 90 328 262 M92 262 Q84 380 110 480 Q126 470 142 482 M328 262 Q336 380 310 480 Q294 470 278 482 M112 214 L128 232 L138 176 L160 226 L176 160 L196 222 L210 156 L224 222 L244 160 L260 226 L282 176 L292 232 L308 214 M112 244 Q104 310 122 372 M308 244 Q316 310 298 372 M210 84 Q222 56 244 62 Q226 68 220 86"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжні зітри.', a: '' },
+      { p: 'HB', f: 1, t: 'Волосся заштрихуй легко, а через маківку клячкою зроби широку світлу смугу — це фірмовий аніме-блиск. Тінь на шиї під підборіддям. Заколка-зірочка — за бажанням.',
+        a: `<path class="s1" d="M92 262 Q70 90 210 84 Q350 90 328 262 Q336 380 310 480 Q294 470 278 482 Q300 380 300 250 Q300 200 282 176 L260 226 L244 160 L224 222 L210 156 L196 222 L176 160 L160 226 L138 176 Q120 200 120 250 Q120 380 142 482 Q126 470 110 480 Q84 380 92 262 Z"/><path class="rf" d="M122 150 Q210 118 298 150" stroke-width="11"/><path class="s2" d="M188 396 Q210 412 232 396 L232 424 Q210 436 188 424 Z"/><path class="l" d="${sparkle(292, 146, 12)}"/>` }
+    ]}
+  }
+},
+/* ---------------- ЕМОЦІЇ ---------------- */
+{
+  id: 'emotions', cat: 'people', title: 'Емоції', emoji: '😄', box: '10 70 400 480',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Намалюй чотири однакові кола — дві зверху, дві знизу — і в кожному легкий хрестик. Підпиши: радість, сум, здивування, злість. У кожне коло додай кумедний чубчик.',
+        tip: 'Емоцію показують три речі: брови, очі й рот. Ніс і форма голови не змінюються — тож стеж саме за цими трьома.',
+        a: EMO.map(([x, y]) => tr(x, y, `<circle class="l" r="78"/><path class="l" d="M-10 -78 Q-4 -96 6 -84 Q10 -98 16 -80"/><path class="g" d="M0 -78 L0 78 M-78 0 L78 0"/>`)).join(''),
+        o: EMO_LBL },
+      { p: 'HB', f: 2, t: 'Радість. Брови підняті дужками. Очі зажмурені від сміху — дві дуги, як веселка. Рот широко відкритий в усмішці, щічки рум’яні.',
+        a: tr(...EMO[0], `<path class="l" d="M-40 -30 Q-26 -40 -12 -32 M12 -32 Q26 -40 40 -30 M-38 -2 Q-26 -18 -14 -2 M14 -2 Q26 -18 38 -2 M-30 18 Q0 24 30 18 Q24 52 0 54 Q-24 52 -30 18 Z M-52 16 l6 -8 M-44 18 l6 -8 M46 16 l-6 -8 M38 18 l-6 -8"/><path class="s2" d="M-18 40 Q0 32 18 40 Q10 52 0 53 Q-10 52 -18 40 Z"/>`) },
+      { p: 'HB', f: 2, t: 'Сум. Внутрішні кінчики брів піднімаються вгору — це головна прикмета суму. Очі — маленькі краплинки, рот вигнутий униз, по щоці котиться сльоза.',
+        a: tr(...EMO[1], `<path class="l" d="M-42 -22 L-12 -34 M12 -34 L42 -22 M-22 42 Q0 26 22 42 M32 12 Q25 24 32 30 Q39 24 32 12 Z"/><ellipse class="fd" cx="-26" cy="2" rx="7" ry="9"/><ellipse class="fd" cx="26" cy="2" rx="7" ry="9"/>`) },
+      { p: 'HB', f: 2, t: 'Здивування. Брови злітають високо вгору. Очі стають великими й круглими, а зіниці — маленькими. Рот — буква «О».',
+        a: tr(...EMO[2], `<path class="l" d="M-42 -36 Q-26 -50 -10 -38 M10 -38 Q26 -50 42 -36"/><circle class="l" cx="-26" cy="0" r="13"/><circle class="l" cx="26" cy="0" r="13"/><circle class="fd" cx="-26" cy="0" r="5"/><circle class="fd" cx="26" cy="0" r="5"/><ellipse class="l" cx="0" cy="38" rx="11" ry="15"/><ellipse class="s2" cx="0" cy="38" rx="8" ry="12"/>`) },
+      { p: 'HB', f: 2, t: 'Злість. Брови товсті й нахилені донизу до носа, майже зустрічаються. Очі примружені, рот — стиснута дуга донизу. Щоки червоніють від злості — зробимо їх сірими штрихами.',
+        a: tr(...EMO[3], `<path class="l x" d="M-44 -30 L-10 -16 M10 -16 L44 -30"/><path class="l" d="M-36 -2 Q-24 -8 -12 -2 M12 -2 Q24 -8 36 -2 M-24 40 Q0 28 24 40 M-8 46 l0 6 M8 46 l0 6"/><ellipse class="fd" cx="-24" cy="4" rx="7" ry="6"/><ellipse class="fd" cx="24" cy="4" rx="7" ry="6"/><path class="s1" d="M-62 10 Q-50 2 -40 14 Q-50 26 -62 10 Z M62 10 Q50 2 40 14 Q50 26 62 10 Z"/>`) },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи всі чотири обличчя, зітри хрестики. Порівняй: форма голови й ніс однакові, а настрій зовсім різний — усе через брови, очі й рот.', a: '' }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Намалюй чотири однакові голови: овал, звужений до підборіддя, лінія очей посередині, коротка лінія носа нижче. Додай вуха, волосся і ніс — вони однакові в усіх чотирьох.',
+        tip: 'У справжньої людини емоцію видно ще й по зморшках: на лобі, біля очей і біля рота. Шукай їх на кожному кроці.',
+        a: EMO.map(([x, y]) => tr(x, y, R_HEAD)).join(''),
+        o: EMO_LBL },
+      { p: 'HB', f: 2, t: 'Радість. Щоки піднімаються й підпирають нижні повіки — очі звужуються. У куточках очей — «гусячі лапки», від носа до кутиків рота — дві дуги. Рот у широкій усмішці, видно верхні зуби.',
+        a: tr(...EMO[0], `<path class="l" d="M-36 -4 Q-24 -12 -12 -4 Q-24 -1 -36 -4 Z M12 -4 Q24 -12 36 -4 Q24 -1 12 -4 Z M-38 -22 Q-26 -30 -12 -24 M12 -24 Q26 -30 38 -22 M-22 42 Q0 60 22 42 M-20 44 Q0 50 20 44 M-16 26 Q-28 36 -24 48 M16 26 Q28 36 24 48 M40 -6 l8 -3 M40 -1 l8 2 M-40 -6 l-8 -3 M-40 -1 l-8 2"/><circle class="fd" cx="-24" cy="-6" r="3"/><circle class="fd" cx="24" cy="-6" r="3"/>`) },
+      { p: 'HB', f: 2, t: 'Сум. Внутрішні кінчики брів підняті, між ними — маленька зморшка на лобі. Зовнішні куточки очей опущені, погляд донизу. Кутики рота опущені, підборіддя трохи зморщене.',
+        a: tr(...EMO[1], `<path class="l" d="M-36 -2 Q-26 -12 -12 -6 Q-24 2 -36 -2 Z M12 -6 Q26 -12 36 -2 Q24 2 12 -6 Z M-38 -18 Q-26 -20 -10 -30 M10 -30 Q26 -20 38 -18 M-8 -40 q8 -4 16 0 M-18 50 Q0 40 18 50 M-10 56 Q0 60 10 56 M-6 66 Q0 64 6 66"/><circle class="fd" cx="-24" cy="-3" r="3"/><circle class="fd" cx="24" cy="-3" r="3"/>`) },
+      { p: 'HB', f: 2, t: 'Здивування. Брови високо — і на лобі з’являються горизонтальні зморшки. Очі широко відкриті: навколо райдужки видно білок. Щелепа опускається, рот відкритий овалом.',
+        a: tr(...EMO[2], `<path class="l" d="M-38 -30 Q-26 -42 -12 -32 M12 -32 Q26 -42 38 -30 M-28 -46 q28 -8 56 0 M-22 -54 q22 -6 44 0"/><ellipse class="l" cx="-24" cy="-6" rx="11" ry="9"/><ellipse class="l" cx="24" cy="-6" rx="11" ry="9"/><circle class="fd" cx="-24" cy="-6" r="3.5"/><circle class="fd" cx="24" cy="-6" r="3.5"/><ellipse class="l" cx="0" cy="52" rx="10" ry="14"/><ellipse class="s2" cx="0" cy="53" rx="7" ry="10"/>`) },
+      { p: 'HB', f: 2, t: 'Злість. Брови опущені й зведені, між ними — дві вертикальні зморшки. Очі примружені, ніздрі роздуті, від носа до рота — глибокі складки. Губи стиснуті в тонку лінію.',
+        a: tr(...EMO[3], `<path class="l k" d="M-38 -20 L-10 -12 M10 -12 L38 -20"/><path class="l" d="M-4 -20 l-2 10 M4 -20 l2 10 M-36 -4 Q-24 -8 -12 -4 Q-24 0 -36 -4 Z M12 -4 Q24 -8 36 -4 Q24 0 12 -4 Z M-9 24 q-5 4 0 7 M9 24 q5 4 0 7 M-18 30 Q-30 40 -28 52 M18 30 Q30 40 28 52 M-10 55 Q0 57 10 55 M-18 49 Q0 44 18 49"/><circle class="fd" cx="-24" cy="-4" r="3"/><circle class="fd" cx="24" cy="-4" r="3"/>`) },
+      { p: '2B', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжні лінії зітри. Легко заштрихуй волосся і правий бік кожного обличчя — так голови стануть об’ємними.',
+        a: EMO.map(([x, y]) => tr(x, y, `<path class="s1" d="M-62 -10 Q-72 -104 0 -102 Q72 -104 62 -10 L56 -40 Q40 -74 0 -72 Q-40 -74 -56 -40 Z M42 -10 Q58 0 56 20 Q50 50 32 64 Q46 30 42 -10 Z"/>`)).join('') }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Намалюй чотири аніме-голови: обличчя з гострим підборіддям, волосся з чубчиком зигзагом і пасмами з боків. Ніс — крихітна рисочка. Усе однакове в усіх чотирьох.',
+        tip: 'В аніме емоції показують ще й значками: краплинка поту, хрестик злості, знак оклику. Це як смайлики, тільки намальовані.',
+        a: EMO.map(([x, y]) => tr(x, y, A_HEAD)).join(''),
+        o: EMO_LBL },
+      { p: 'HB', f: 2, t: 'Радість. Очі — дві товсті дуги-«галочки» ^ ^. Рот широко відкритий, всередині язичок. Великий рум’янець і блискітка поруч.',
+        a: tr(...EMO[0], `<path class="l x" d="M-40 10 Q-28 -6 -14 10 M14 10 Q28 -6 40 10"/><path class="l" d="M-14 42 Q0 40 14 42 Q8 58 0 58 Q-8 58 -14 42 Z M-48 32 l6 -8 M-40 34 l6 -8 M-32 35 l6 -8 M48 32 l-6 -8 M40 34 l-6 -8 M32 35 l-6 -8 ${sparkle(76, -64, 10)}"/><path class="s2" d="M-7 52 Q0 48 7 52 Q4 57 0 57 Q-4 57 -7 52 Z"/>`) },
+      { p: 'HB', f: 2, t: 'Сум. Великі очі з блисками, внутрішні кінчики брів підняті. Сльози течуть струмочками з кожного ока. Рот — хвиляста лінія.',
+        a: tr(...EMO[1], aEye(-26, 12, 14, 17, -1) + aEye(26, 12, 14, 17) + `<path class="l" d="M-40 -12 L-14 -20 M14 -20 L40 -12 M-26 30 Q-30 50 -24 72 M-20 30 Q-22 50 -18 70 M26 30 Q30 50 24 72 M20 30 Q22 50 18 70 M-10 48 Q-5 44 0 48 Q5 44 10 48"/>`) },
+      { p: 'HB', f: 2, t: 'Здивування. Очі — великі білі овали з крихітними зіницями. Брови високо, рот — маленьке «о». Біля голови — знак оклику і рисочки «шоку».',
+        a: tr(...EMO[2], `<ellipse class="l" cx="-26" cy="10" rx="14" ry="18"/><ellipse class="l" cx="26" cy="10" rx="14" ry="18"/><circle class="fd" cx="-26" cy="10" r="4"/><circle class="fd" cx="26" cy="10" r="4"/><path class="l" d="M-40 -16 Q-26 -24 -12 -16 M12 -16 Q26 -24 40 -16 M86 -88 L82 -60 M-84 -40 l-12 -6 M-86 -24 l-14 0 M-84 -8 l-12 6"/><ellipse class="l" cx="0" cy="50" rx="6" ry="8"/><circle class="fd" cx="80" cy="-50" r="3"/>`) },
+      { p: 'HB', f: 2, t: 'Злість. Очі гострі, як трикутники, брови товсті й опущені до носа. Рот кричить — з маленьким іклом. На лобі — аніме-знак злості: чотири дужки хрестом.',
+        a: tr(...EMO[3], `<path class="l" d="M-40 4 L-12 10 Q-26 22 -40 4 Z M40 4 L12 10 Q26 22 40 4 Z M-18 40 L18 40 Q14 58 0 58 Q-14 58 -18 40 Z M10 40 l-3 6 l-3 -6 M40 -80 Q48 -74 40 -68 M60 -80 Q52 -74 60 -68 M44 -84 Q50 -76 56 -84 M44 -64 Q50 -72 56 -64"/><path class="l x" d="M-42 -10 L-12 0 M12 0 L42 -10"/><circle class="fd" cx="-26" cy="11" r="4"/><circle class="fd" cx="26" cy="11" r="4"/>`) },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжне зітри. Волосся в усіх чотирьох легенько заштрихуй — і порівняй: зачіска однакова, а настрій різний!',
+        a: EMO.map(([x, y]) => tr(x, y, `<path class="s1" d="M-74 10 Q-86 -96 0 -98 Q86 -96 74 10 L66 -14 L62 -46 L50 -24 L42 -60 L24 -28 L10 -64 L0 -30 L-10 -64 L-24 -28 L-42 -60 L-50 -24 L-62 -46 L-66 -14 Z"/>`)).join('') }
+    ]}
+  }
+},
+/* ---------------- ДІВЧИНКА ---------------- */
+{
+  id: 'girl', cat: 'people', title: 'Дівчинка', emoji: '👧', box: '40 16 340 540',
+  styles: {
+    cartoon: { steps: [
+      { p: 'HB', f: 1, t: 'Мультяшна дівчинка — це лише 3 голови у висоту: голова дуже велика. Збоку проведи лінійку з трьох однакових відрізків. Зверху велике коло голови, під ним трапеція сукні й лінії рук і ніг.',
+        tip: 'Що менше «голів» у зрості, то милішим і дитячішим виглядає персонаж.',
+        a: `<circle class="g" cx="210" cy="118" r="72"/><path class="g" d="M180 200 L140 360 L280 360 L240 200 Z M196 360 L196 450 M224 360 L224 450 M180 205 L156 318 M240 205 L264 318"/>`,
+        ot: RULER([46, 190, 334, 458]) },
+      { p: 'HB', f: 1, t: 'Обведи голову: кругла, внизу трохи ширші щічки. Зачіска: волосся шапочкою, хвилястий чубчик і два хвостики з боків, перев’язані гумками.',
+        a: `<path class="l" d="M140 120 Q140 50 210 45 Q280 50 280 120 Q280 170 245 184 Q228 190 210 190 Q192 190 175 184 Q140 170 140 120 M134 128 Q124 40 210 36 Q296 40 286 128 M142 110 Q150 80 176 92 Q190 66 210 88 Q232 64 246 90 Q272 80 278 110 M138 108 Q100 104 92 150 Q86 196 112 222 Q112 190 124 170 Q134 152 136 128 M282 108 Q320 104 328 150 Q334 196 308 222 Q308 190 296 170 Q286 152 284 128"/><circle class="l" cx="134" cy="112" r="7"/><circle class="l" cx="286" cy="112" r="7"/>` },
+      { p: 'HB', f: 2, t: 'Обличчя: великі темні очі з блисками, носик-гачечка, усмішка і рум’янець на щічках.',
+        a: `<ellipse class="fd" cx="182" cy="134" rx="12" ry="16"/><ellipse class="fd" cx="238" cy="134" rx="12" ry="16"/><circle class="fw" cx="186" cy="128" r="4"/><circle class="fw" cx="242" cy="128" r="4"/><path class="l" d="M208 150 q5 4 0 8 M194 164 Q210 178 226 164 M158 160 l5 -7 M165 162 l5 -7 M172 163 l5 -7 M248 163 l5 -7 M255 162 l5 -7 M262 160 l5 -7"/>` },
+      { p: 'HB', f: 1, t: 'Сукня — дзвіночком, з круглим комірцем і пишними рукавчиками. Ручки — дві лінії з кружечками-долоньками. На сукні — квіточка й смужка внизу.',
+        a: `<path class="l" d="M202 188 L202 198 M218 188 L218 198 M184 198 Q210 206 236 198 L250 250 L288 358 Q210 374 132 358 L170 250 Z M196 200 Q210 214 224 200 M184 198 Q160 202 154 226 Q166 238 176 230 M236 198 Q260 202 266 226 Q254 238 244 230 M158 230 Q150 276 152 312 M174 232 Q168 276 168 312 M262 230 Q270 276 268 312 M246 232 Q252 276 252 312 M136 346 Q210 362 284 346"/><circle class="l" cx="160" cy="320" r="11"/><circle class="l" cx="260" cy="320" r="11"/><circle class="l" cx="210" cy="272" r="5"/><path class="l" d="M210 267 q-6 -10 0 -12 q6 2 0 12 M215 272 q10 -6 12 0 q-2 6 -12 0 M210 277 q6 10 0 12 q-6 -2 0 -12 M205 272 q-10 6 -12 0 q2 -6 12 0"/>` },
+      { p: 'HB', f: 1, t: 'Ніжки — короткі стовпчики з-під сукні, внизу круглі туфельки.',
+        a: `<path class="l" d="M190 366 L190 440 M204 368 L204 440 M216 368 L216 440 M230 366 L230 440"/><ellipse class="l" cx="194" cy="448" rx="18" ry="10"/><ellipse class="l" cx="226" cy="448" rx="18" ry="10"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи всі потрібні лінії впевнено, допоміжне зітри.', a: '' },
+      { p: '2B', f: 2, t: 'Волосся й хвостики заштрихуй легко. Правий бік сукні — ледь-ледь, туфельки — темно, олівцем 2B. Під сукнею на ніжках тінь, під дівчинкою — тінь на підлозі.',
+        a: `<path class="s1" d="M134 128 Q124 40 210 36 Q296 40 286 128 L278 110 Q272 80 246 90 Q232 64 210 88 Q190 66 176 92 Q150 80 142 110 Z M138 108 Q100 104 92 150 Q86 196 112 222 Q112 190 124 170 Q134 152 136 128 Z M282 108 Q320 104 328 150 Q334 196 308 222 Q308 190 296 170 Q286 152 284 128 Z"/><path class="s1" d="M244 212 L250 250 L288 358 Q272 362 258 364 Q268 290 244 212 Z"/><ellipse class="s3" cx="194" cy="448" rx="18" ry="10"/><ellipse class="s3" cx="226" cy="448" rx="18" ry="10"/><path class="s2" d="M190 366 L230 366 L230 380 L190 380 Z"/><ellipse class="s2" cx="210" cy="462" rx="90" ry="8"/><path class="rf" d="M160 64 Q210 46 260 64" stroke-width="8"/>` }
+    ]},
+    realistic: { steps: [
+      { p: 'HB', f: 1, t: 'Дівчинка 8 років — це приблизно 6 голів у висоту. Збоку намалюй лінійку з 6 однакових відрізків. Зверху — овал голови на один відрізок. Потім «скелет» із паличок: хребет, лінія плечей, лінія стегон, руки й ноги. Кружечки — лікті й коліна.',
+        tip: 'Руки опущені — кінчики пальців доходять до середини стегна. Лікті — на рівні талії, коліна — на середині ноги.',
+        a: `<ellipse class="g" cx="210" cy="81" rx="33" ry="42"/><path class="g" d="M210 123 L210 289 M158 142 L262 142 M180 282 L240 282 M158 142 L148 228 L144 312 M262 142 L272 228 L276 312 M190 289 L186 410 L186 530 M230 289 L234 410 L234 530"/><circle class="g" cx="148" cy="228" r="5"/><circle class="g" cx="272" cy="228" r="5"/><circle class="g" cx="186" cy="410" r="5"/><circle class="g" cx="234" cy="410" r="5"/>`,
+        ot: RULER([40, 123, 206, 289, 372, 455, 538]) },
+      { p: 'HB', f: 1, t: 'Голова: овал обличчя, звужений до підборіддя, тонка шия. Волосся довге, з проділом посередині: зовнішня лінія ширша за голову, пасма спадають нижче плечей.',
+        a: `<path class="l" d="M178 78 Q178 40 210 39 Q242 40 242 78 Q242 104 226 116 Q218 123 210 123 Q202 123 194 116 Q178 104 178 78 M200 120 L200 138 M220 120 L220 138 M174 90 Q168 32 210 30 Q252 32 246 90 Q250 130 250 176 Q240 172 234 176 Q236 150 236 72 M174 90 Q170 130 170 176 Q180 172 186 176 Q184 150 184 72 M184 72 Q196 48 210 46 Q224 48 236 72 M210 32 L210 46"/>` },
+      { p: 'HB', f: 2, t: 'Обличчя маленьке, тому риси — дрібні й легкі. Очі — на середині голови, ніс — посередині між очима й підборіддям, рот трохи нижче. Не тисни на олівець.',
+        a: `<path class="l" d="M192 84 Q198 79 204 84 Q198 87 192 84 Z M216 84 Q222 79 228 84 Q222 87 216 84 Z M190 75 q8 -4 15 0 M215 75 q8 -4 15 0 M209 92 Q212 100 208 101 M203 108 Q210 112 217 108"/><circle class="fd" cx="198" cy="83" r="2"/><circle class="fd" cx="222" cy="83" r="2"/>` },
+      { p: 'HB', f: 1, t: 'Сукня: від плечей — рукави-ліхтарики, ліф до талії, пояс, далі спідниця розширюється донизу до колін. Руки — від рукавів уздовж «паличок», у ліктях трохи тонші, долоні — до середини стегна.',
+        a: `<path class="l" d="M200 138 Q176 140 162 150 M220 138 Q244 140 258 150 M162 150 Q150 168 152 188 L174 186 Q172 170 172 158 M258 150 Q270 168 268 188 L246 186 Q248 170 248 158 M172 158 L178 230 M248 158 L242 230 M200 140 Q210 150 220 140 M178 230 L154 362 Q210 372 266 362 L242 230 M178 230 Q210 236 242 230 M178 238 Q210 244 242 238 M186 300 L176 360 M210 292 L210 366 M234 300 L244 360 M152 188 Q146 250 142 302 M172 190 Q166 250 158 302 M142 302 Q138 322 150 326 Q160 324 158 302 M268 188 Q274 250 278 302 M248 190 Q254 250 262 302 M278 302 Q282 322 270 326 Q260 324 262 302"/>` },
+      { p: 'HB', f: 1, t: 'Ноги — від спідниці до підлоги, коліна на рівні кружечків. Ноги трохи звужуються до щиколоток. Шкарпетки й туфлі.',
+        a: `<path class="l" d="M188 366 L186 410 Q185 470 188 512 M204 368 Q205 440 202 512 M216 368 Q215 440 218 512 M232 366 L234 410 Q235 470 232 512 M187 492 L203 492 M217 492 L233 492 M186 512 Q174 530 190 534 L206 534 L203 512 M217 512 L214 534 L230 534 Q246 530 233 512"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто, допоміжні лінії й лінійку зітри. У волоссі додай кілька довгих ліній-пасом.',
+        a: `<path class="l" d="M196 50 Q184 80 180 150 M224 50 Q236 80 240 150"/>` },
+      { p: '2B', f: 2, t: 'Світло зліва. Волосся заштрихуй легко вздовж пасом. Правий бік сукні й рук — легка тінь. Під спідницею на ногах — смуга тіні, під підборіддям на шиї — теж. Туфлі темні. На підлозі — тінь.',
+        a: `<path class="s1" d="M174 90 Q168 32 210 30 Q252 32 246 90 Q250 130 250 176 Q240 172 234 176 Q236 150 236 72 Q224 48 210 46 Q196 48 184 72 Q184 150 186 176 Q180 172 170 176 Q170 130 174 90 Z"/><path class="s1" d="M242 230 L266 362 Q250 366 236 366 Q246 300 236 236 Z M248 158 L242 230 L234 230 Q240 190 238 154 Z M262 190 Q268 250 272 300 L278 302 Q274 250 268 188 Z"/><path class="s2" d="M186 366 L234 366 L234 380 Q210 384 186 380 Z M200 122 Q210 130 220 122 L220 134 Q210 138 200 134 Z"/><path class="s3" d="M186 512 Q174 530 190 534 L206 534 L203 512 Z M217 512 L214 534 L230 534 Q246 530 233 512 Z"/><ellipse class="s2" cx="212" cy="538" rx="80" ry="8"/>` },
+      { p: 'KL', f: 1, t: 'Клячкою — світла смуга на волоссі та крихітні блиски в очах.',
+        a: `<path class="rf" d="M186 52 Q210 40 234 52" stroke-width="5"/><circle class="fw" cx="199" cy="82" r="0.9"/><circle class="fw" cx="223" cy="82" r="0.9"/>` }
+    ]},
+    anime: { steps: [
+      { p: 'HB', f: 1, t: 'Аніме-дівчинка — приблизно 5 голів у висоту, ноги довгі. Збоку лінійка з 5 відрізків. Голова — коло з гострим підборіддям, далі «скелет» із паличок і кружечки на суглобах.',
+        a: `<circle class="g" cx="210" cy="80" r="40"/><path class="g" d="M172 94 L210 140 L248 94 M210 140 L210 330 M170 162 L250 162 M184 318 L236 318 M170 162 L160 240 L158 300 M250 162 L260 240 L262 300 M194 330 L190 430 L190 520 M226 330 L230 430 L230 520"/><circle class="g" cx="160" cy="240" r="4"/><circle class="g" cx="260" cy="240" r="4"/><circle class="g" cx="190" cy="430" r="4"/><circle class="g" cx="230" cy="430" r="4"/>`,
+        ot: RULER([40, 140, 240, 340, 440, 540]) },
+      { p: 'HB', f: 1, t: 'Обличчя з гострим підборіддям. Волосся довге й пишне: чубчик із гострих пасом, пасма спадають до пояса, на маківці — «антенка».',
+        a: `<path class="l" d="M170 78 Q170 40 210 38 Q250 40 250 78 Q250 110 228 128 Q218 138 210 140 Q202 138 192 128 Q170 110 170 78 M164 96 Q152 28 210 24 Q268 28 256 96 M164 96 Q156 180 148 258 Q166 250 176 262 Q174 200 176 150 M256 96 Q264 180 272 258 Q254 250 244 262 Q246 200 244 150 M170 68 L180 80 L186 54 L198 78 L206 50 L214 78 L224 52 L232 80 L240 56 L250 70 M210 24 Q218 6 232 10 Q218 14 214 26"/>` },
+      { p: '2B', f: 2, t: 'Великі аніме-очі — навіть на маленькому обличчі вони займають багато місця. Ніс — рисочка, рот — дужка, рум’янець.',
+        a: aEye(192, 100, 11, 13, -1) + aEye(228, 100, 11, 13) + `<path class="l" d="M211 114 l-2 4 M205 126 Q210 129 215 126 M180 116 l3 -4 M185 117 l3 -4 M232 117 l3 -4 M237 116 l3 -4"/>` },
+      { p: 'HB', f: 1, t: 'Шкільна форма-матроска: блузка з великим комірцем і бантиком, спідниця в складку. Руки тонкі, вздовж тіла.',
+        a: `<path class="l" d="M203 138 L203 150 M217 138 L217 150 M203 150 Q182 152 172 162 M217 150 Q238 152 248 162 M172 162 L178 240 M248 162 L242 240 M192 152 L178 176 L210 194 L242 176 L228 152 M210 194 L198 206 L206 208 Z M210 194 L222 206 L214 208 Z M178 240 L160 322 L260 322 L242 240 M178 240 L242 240 M190 240 L182 322 M202 240 L198 322 M218 240 L222 322 M230 240 L238 322 M172 164 Q162 206 158 246 Q156 276 160 298 M186 174 Q178 216 174 290 M160 298 Q156 316 168 318 Q176 314 174 290 M248 164 Q258 206 262 246 Q264 276 260 298 M234 174 Q242 216 246 290 M260 298 Q264 316 252 318 Q244 314 246 290"/>` },
+      { p: 'HB', f: 1, t: 'Ноги довгі й рівні — в аніме це важлива прикмета. Шкарпетки до колін і туфельки.',
+        a: `<path class="l" d="M190 322 L188 430 Q188 480 192 510 M204 322 L204 430 Q204 480 202 510 M216 322 L216 430 Q216 480 218 510 M230 322 L232 430 Q232 480 228 510 M188 440 L204 440 M216 440 L232 440 M190 510 Q178 526 194 528 L206 528 L202 510 M218 510 L214 528 L226 528 Q242 526 228 510"/>` },
+      { p: 'HB', f: 2, ink: true, erase: true, t: 'Обведи начисто плавними лініями, допоміжне й лінійку зітри.', a: '' },
+      { p: '2B', f: 2, t: 'Волосся — легкі штрихи і світла смуга-блиск через маківку. Спідниця темніша, туфлі — найтемніші. Тінь на підлозі й блискітки навколо.',
+        a: `<path class="s1" d="M164 96 Q152 28 210 24 Q268 28 256 96 Q264 180 272 258 Q254 250 244 262 Q246 200 250 70 L240 56 L232 80 L224 52 L214 78 L206 50 L198 78 L186 54 L180 80 L170 68 Q174 200 176 262 Q166 250 148 258 Q156 180 164 96 Z"/><path class="rf" d="M176 44 Q210 32 244 44" stroke-width="6"/><path class="s2" d="M178 240 L160 322 L260 322 L242 240 Z"/><path class="s3" d="M190 510 Q178 526 194 528 L206 528 L202 510 Z M218 510 L214 528 L226 528 Q242 526 228 510 Z"/><ellipse class="s2" cx="210" cy="532" rx="70" ry="7"/><path class="l" d="${sparkle(320, 90, 13)} ${sparkle(96, 200, 8)} ${sparkle(330, 330, 7)}"/>` }
+    ]}
+  }
+},
+{ id: 'cube',     cat: 'shadows', title: 'Куб і циліндр', emoji: '🧊', soon: true },
+{ id: 'fur',      cat: 'textures', title: 'Шерсть і хутро', emoji: '🐾', soon: true },
+{ id: 'hair',     cat: 'textures', title: 'Волосся', emoji: '💇‍♀️', soon: true },
+{ id: 'feathers', cat: 'textures', title: 'Пір’я', emoji: '🪶', soon: true },
+{ id: 'scales',   cat: 'textures', title: 'Луска', emoji: '🐠', soon: true },
+{ id: 'wood',     cat: 'textures', title: 'Дерево й кора', emoji: '🪵', soon: true },
+{ id: 'fabric',   cat: 'textures', title: 'Тканина', emoji: '🧣', soon: true }
+];
+const getLesson = id => LESSONS.find(l => l.id === id && !l.soon);
+
+/* =====================================================================
+   Малювання SVG
+   ===================================================================== */
+function stepsOf(lesson, style) { return style ? lesson.styles[style].steps : lesson.steps; }
+
+function artSVG(lesson, style, upto, mode) {
+  // mode: 'lesson' — поточний крок червоним; 'final' — чистовий вигляд
+  const steps = stepsOf(lesson, style);
+  const fin = mode === 'final';
+  let inked = fin, erased = fin, body = '', over = '', tmp = '';
+  steps.forEach((s, i) => {
+    if (i > upto) return;
+    if (s.ink) inked = true;
+    if (s.erase) erased = true;
+    const cls = (!fin && i === upto) ? 'now' : 'past';
+    body += `<g class="step ${cls}">${s.a || ''}</g>`;
+    if (s.o) over += s.o;
+    if (s.ot) tmp += s.ot;
+  });
+  if (!erased) over += tmp;
+  const vb = fin && lesson.box ? lesson.box : '0 0 420 594';
+  return `<svg class="art${inked ? ' inked' : ''}${erased ? ' erased' : ''}" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(lesson.title)}">
+    <defs>${DEFS}${lesson.defs || ''}</defs>
+    <g filter="url(#pencil)">${body}</g>${over}</svg>`;
+}
+
+/* =====================================================================
+   Голос
+   ===================================================================== */
+let voices = [];
+function loadVoices() { try { voices = speechSynthesis.getVoices(); } catch (e) {} }
+if ('speechSynthesis' in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+const ukVoice = () => voices.find(v => /^uk/i.test(v.lang));
+let warnedVoice = false;
+function speak(text) {
+  if (!('speechSynthesis' in window)) { toast('Цей браузер не вміє читати вголос'); return; }
+  loadVoices();
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}☀-➿]/gu, ''));
+  u.lang = 'uk-UA'; u.rate = 0.95;
+  const v = ukVoice();
+  if (v) u.voice = v;
+  else if (!warnedVoice) { warnedVoice = true; toast('Український голос не знайдено. Як додати — у налаштуваннях ⚙️'); }
+  speechSynthesis.speak(u);
+}
+function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} }
+
+/* =====================================================================
+   Дрібниці інтерфейсу
+   ===================================================================== */
+let toastT;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3200);
+}
+function openModal(html) {
+  const m = $('#modal'); m.innerHTML = `<div class="mbox ${html.narrow ? 'narrow' : ''}"><button class="close" data-close aria-label="Закрити">×</button>${html.body}</div>`;
+  m.hidden = false;
+}
+function closeModal() { const m = $('#modal'); m.hidden = true; m.innerHTML = ''; }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal' || e.target.closest('[data-close]')) closeModal(); });
+const fmtDate = ts => new Date(ts).toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
+const keyOf = (id, style) => id + ':' + (style || 'main');
+
+/* =====================================================================
+   Головна
+   ===================================================================== */
+function starsFor(lesson) {
+  if (lesson.styles) {
+    return Object.keys(STYLES).map(s => progress.done[keyOf(lesson.id, s)] ? '★' : '☆').join('');
+  }
+  return progress.done[keyOf(lesson.id)] ? '★' : '☆';
+}
+function renderHome() {
+  const doneCount = Object.keys(progress.done).length;
+  let html = `<div class="wrap">
+    <div class="hello"><div class="big">🎨</div><div>
+      <h1>Привіт! Що малюємо сьогодні?</h1>
+      <p>${doneCount ? `Уже готово малюнків: <b>${doneCount}</b>. Так тримати!` : 'Почни з розминки — а потім обирай котика чи кулю з тінню.'}</p>
+    </div></div>
+    ${storageWorks ? '' : `<div class="tip" style="margin-top:14px">⚠️ Тут сайт не може нічого запам’ятати: зірочки й фото зникнуть після закриття. Уроки працюють як завжди.</div>`}`;
+  CATS.forEach(c => {
+    const items = LESSONS.filter(l => l.cat === c.id);
+    if (!items.length) return;
+    html += `<section class="section"><h2>${c.icon} ${c.title} <span class="sub">${c.sub}</span></h2><div class="grid">`;
+    items.forEach(l => {
+      if (l.soon) {
+        html += `<div class="card soon"><div class="thumb">${l.emoji}</div><div class="name">${l.title}</div><div class="meta"><span class="pill">скоро</span></div></div>`;
+      } else {
+        const st = l.styles ? (l.styles[prefs.style] ? prefs.style : 'cartoon') : null;
+        const steps = stepsOf(l, st);
+        html += `<a class="card" href="#/lesson/${l.id}"><div class="thumb">${artSVG(l, st, steps.length - 1, 'final')}</div>
+          <div class="name">${l.emoji} ${l.title}</div>
+          <div class="meta"><span class="stars">${starsFor(l)}</span> · ${steps.length} кроків${l.styles ? ' · 3 стилі' : ''}</div></a>`;
+      }
+    });
+    html += `</div></section>`;
+  });
+  html += `</div>`;
+  $('#app').innerHTML = html;
+}
+
+/* =====================================================================
+   Урок
+   ===================================================================== */
+let cur = null;
+let playTimer = null;
+
+function renderLesson(id) {
+  const lesson = getLesson(id);
+  const style = lesson.styles ? (lesson.styles[prefs.style] ? prefs.style : 'cartoon') : null;
+  const steps = stepsOf(lesson, style);
+  const step = Math.min(progress.pos[keyOf(id, style)] || 0, steps.length - 1);
+  cur = { lesson, style, step, seen: step };
+  const styleBtns = lesson.styles ? `<div class="styles" role="tablist">${Object.keys(STYLES).map(s =>
+    `<button data-style="${s}" class="${s === style ? 'on' : ''}">${STYLES[s].icon} ${STYLES[s].name}</button>`).join('')}</div>
+    <button class="cmp" id="bCompare">👀 Порівняти стилі</button>` : '';
+  $('#app').innerHTML = `<div class="lesson">
+    <div class="lhead"><a class="back" href="#/">← Уроки</a><h1 class="ltitle">${lesson.emoji} ${lesson.title}</h1>${styleBtns}</div>
+    <div class="stage"><span class="a4tag">аркуш А4</span><div id="art"></div></div>
+    <div class="panel" id="panel"></div>
+  </div>`;
+  $('#app').querySelectorAll('[data-style]').forEach(b => b.onclick = () => {
+    prefs.style = b.dataset.style; savePrefs(); renderLesson(id);
+  });
+  const cmp = $('#bCompare'); if (cmp) cmp.onclick = () => showCompare(lesson);
+  updateLesson(false);
+}
+
+function updateLesson(animate) {
+  const { lesson, style, step } = cur;
+  const steps = stepsOf(lesson, style);
+  const s = steps[step];
+  cur.seen = Math.max(cur.seen, step);
+  progress.pos[keyOf(lesson.id, style)] = step; saveProgress();
+  $('#art').innerHTML = artSVG(lesson, style, step, 'lesson');
+  const pen = PENCIL[s.p] || PENCIL.HB;
+  const last = step === steps.length - 1;
+  const hasNew = !!(s.a && s.a.trim());
+  $('#panel').innerHTML = `
+    ${style ? `<div class="styleinfo"><b>${STYLES[style].name} стиль.</b> ${STYLES[style].info}</div>` : ''}
+    ${step === 0 ? `<div class="need">🧰 Знадобиться: ${NEED}</div>` : ''}
+    <div class="stepno">Крок ${step + 1} з ${steps.length}</div>
+    <div class="chips"><span class="chip ${pen.cls}">${s.p === 'KL' ? '🩷' : '✏️'} ${pen.label}</span>
+      <span class="chip press">Натиск: ${[1, 2, 3].map(n => `<i class="${n <= s.f ? 'on' : ''}"></i>`).join('')} ${PRESS[s.f]}</span></div>
+    <p class="stext">${esc(s.t)}</p>
+    ${s.tip ? `<div class="tip">💡 ${esc(s.tip)}</div>` : ''}
+    <div class="legend"><span><b style="color:var(--now)">червоне</b> — малюєш зараз</span><span><b style="color:#909090">сіре</b> — уже намальовано</span></div>
+    <div class="btns">
+      <button class="btn" id="bPlay" ${hasNew ? '' : 'disabled'}>▶ Покажи, як</button>
+      <button class="btn" id="bVoice">🔊 Прочитай</button>
+      <button class="btn" id="bPrev" ${step === 0 ? 'disabled' : ''}>◀ Назад</button>
+      <button class="btn primary" id="bNext">${last ? 'Готово ⭐' : 'Далі ▶'}</button>
+    </div>
+    <div class="dots">${steps.map((_, i) => `<button data-go="${i}" class="${i === step ? 'on' : i <= cur.seen ? 'seen' : ''}" aria-label="Крок ${i + 1}"></button>`).join('')}</div>`;
+  $('#bPlay').onclick = playStep;
+  $('#bVoice').onclick = () => speak(`Крок ${step + 1}. ${s.t}${s.tip ? ' Порада: ' + s.tip : ''}`);
+  $('#bPrev').onclick = () => go(step - 1);
+  $('#bNext').onclick = () => last ? finish() : go(step + 1);
+  $('#panel').querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(+b.dataset.go));
+  if (animate && prefs.autoPlay && hasNew) playStep();
+  if (animate && prefs.autoVoice) speak(`Крок ${step + 1}. ${s.t}`);
+}
+
+function go(i) {
+  const steps = stepsOf(cur.lesson, cur.style);
+  if (i < 0 || i >= steps.length) return;
+  stopVoice();
+  const forward = i > cur.step;
+  cur.step = i;
+  updateLesson(forward);
+}
+
+/* Анімація «як провести лінію»: кожна нова лінія малюється по черзі,
+   штрихування й заливки проявляються наприкінці. */
+function playStep() {
+  const svg = $('#art svg'); if (!svg) return;
+  clearTimeout(playTimer);
+  svg.innerHTML = svg.innerHTML; // скинути попередню анімацію
+  const els = [...svg.querySelectorAll('.now path, .now line, .now circle, .now ellipse, .now rect')];
+  const isFill = el => /\b(fd|fw|s1|s2|s3|s4|grd)\b/.test(el.getAttribute('class') || '');
+  const lines = els.filter(el => !isFill(el) && el.getTotalLength);
+  const fills = els.filter(isFill);
+  let delay = 0;
+  lines.forEach(el => {
+    let len = 0; try { len = el.getTotalLength(); } catch (e) {}
+    if (!len) return;
+    const dur = Math.min(2.2, Math.max(.45, len / 260));
+    el.style.strokeDasharray = len + ' ' + len;
+    el.style.strokeDashoffset = len;
+    el.style.transition = `stroke-dashoffset ${dur}s ease-in-out ${delay}s`;
+    el.dataset.len = len;
+    delay += dur * .85;
+  });
+  fills.forEach(el => { el.style.opacity = 0; el.style.transition = `opacity .7s ease ${delay}s`; delay += .35; });
+  svg.getBoundingClientRect();
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    lines.forEach(el => { el.style.strokeDashoffset = 0; });
+    fills.forEach(el => { el.style.opacity = 1; });
+  }));
+  // після анімації прибрати службові стилі (повернути пунктир допоміжним лініям)
+  playTimer = setTimeout(() => lines.forEach(el => { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; el.style.transition = ''; }), (delay + 2.5) * 1000);
+}
+
+function finish() {
+  const { lesson, style } = cur;
+  progress.done[keyOf(lesson.id, style)] = Date.now(); saveProgress();
+  const others = lesson.styles ? Object.keys(STYLES).filter(s => s !== style && !progress.done[keyOf(lesson.id, s)]) : [];
+  openModal({ narrow: true, body: `<div class="big">🌟</div><h2>Молодець!</h2>
+    <p>Малюнок «${esc(lesson.title)}»${style ? ` (${STYLES[style].name.toLowerCase()} стиль)` : ''} готовий. Сфотографуй свій аркуш — і він з’явиться в галереї «Мої роботи».</p>
+    <div class="btns" style="margin-top:14px"><button class="btn primary" id="mPhoto">📷 Додати фото</button><button class="btn" id="mHome">До уроків</button></div>
+    ${others.length ? `<p class="note" style="margin-top:14px">А тепер спробуй той самий малюнок у стилі «${STYLES[others[0]].name}»!</p>
+      <button class="btn" id="mNext" style="width:100%">${STYLES[others[0]].icon} Малювати: ${STYLES[others[0]].name}</button>` : ''}` });
+  $('#mPhoto').onclick = () => { closeModal(); askPhoto(lesson.id, style); };
+  $('#mHome').onclick = () => { closeModal(); location.hash = '#/'; };
+  const n = $('#mNext'); if (n) n.onclick = () => { closeModal(); prefs.style = others[0]; savePrefs(); progress.pos[keyOf(lesson.id, others[0])] = 0; renderLesson(lesson.id); };
+}
+
+function showCompare(lesson) {
+  openModal({ body: `<h2>${esc(lesson.title)} — три стилі</h2><p class="note">Порівняй: розмір голови, форма очей, скільки деталей і тіні. Торкнися стилю, щоб його малювати.</p>
+    <div class="cmpgrid">${Object.keys(STYLES).map(s => {
+      const st = lesson.styles[s].steps;
+      return `<button data-pick="${s}">${artSVG(lesson, s, st.length - 1, 'final')}<span>${STYLES[s].icon} ${STYLES[s].name}</span><small>${STYLES[s].info}</small></button>`;
+    }).join('')}</div>` });
+  $('#modal').querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
+    prefs.style = b.dataset.pick; savePrefs(); closeModal(); renderLesson(lesson.id);
+  });
+}
+
+/* =====================================================================
+   Галерея робіт
+   ===================================================================== */
+let pendingTag = null;
+function askPhoto(lessonId, style) { pendingTag = { lesson: lessonId || '', style: style || '' }; $('#photoInput').value = ''; $('#photoInput').click(); }
+
+function resizeImage(file, max = 1400) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const k = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        res(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = rej; img.src = fr.result;
+    };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+
+$('#photoInput').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  try {
+    const src = await resizeImage(f);
+    const tag = pendingTag || { lesson: '', style: '' };
+    await DB.put({ id: String(Date.now()), date: Date.now(), lesson: tag.lesson, style: tag.style, src });
+    toast('Фото збережено 🎉');
+    if (location.hash === '#/gallery') renderGallery(); else location.hash = '#/gallery';
+  } catch (err) {
+    toast('Не вдалося зберегти фото на цьому пристрої');
+  }
+});
+
+function tagLabel(p) {
+  const l = LESSONS.find(x => x.id === p.lesson);
+  if (!l) return 'Вільний малюнок';
+  return l.title + (p.style && STYLES[p.style] ? ' · ' + STYLES[p.style].name.toLowerCase() : '');
+}
+
+async function renderGallery() {
+  const opts = ['<option value="">Вільний малюнок</option>'];
+  LESSONS.filter(l => !l.soon).forEach(l => {
+    if (l.styles) Object.keys(STYLES).forEach(s => opts.push(`<option value="${l.id}|${s}">${l.title} · ${STYLES[s].name.toLowerCase()}</option>`));
+    else opts.push(`<option value="${l.id}|">${l.title}</option>`);
+  });
+  $('#app').innerHTML = `<div class="wrap">
+    <div class="hello"><div class="big">🖼️</div><div><h1>Мої роботи</h1><p>Фотографуй свої малюнки — так буде видно, як ти ростеш.</p></div></div>
+    <div class="gtools" style="margin-top:16px">
+      <label for="tagSel" style="font-weight:700">Що це за малюнок?</label>
+      <select id="tagSel">${opts.join('')}</select>
+      <button class="btn primary" id="gAdd">📷 Додати фото</button>
+    </div>
+    <div id="photos"></div></div>`;
+  $('#gAdd').onclick = () => { const [l, s] = $('#tagSel').value.split('|'); askPhoto(l, s); };
+  let list = [];
+  try { list = await DB.all(); } catch (e) {
+    $('#photos').innerHTML = `<div class="empty">На цьому пристрої браузер не дозволяє зберігати фото. Спробуй відкрити сайт у Safari як звичайну сторінку.</div>`; return;
+  }
+  if (!list.length) { $('#photos').innerHTML = `<div class="empty">Тут поки порожньо. Намалюй щось і додай перше фото! ✏️</div>`; return; }
+  $('#photos').innerHTML = `<div class="photos">${list.map(p => `<button class="ph" data-ph="${p.id}"><img src="${p.src}" alt=""><div class="cap">${esc(tagLabel(p))}</div><div class="dt">${fmtDate(p.date)}</div></button>`).join('')}</div>`;
+  $('#photos').querySelectorAll('[data-ph]').forEach(b => b.onclick = () => {
+    const p = list.find(x => x.id === b.dataset.ph);
+    openModal({ body: `<img class="bigimg" src="${p.src}" alt=""><h2>${esc(tagLabel(p))}</h2><p class="note">${fmtDate(p.date)}</p>
+      <div class="row"><button class="btn" id="phDel">🗑 Видалити фото</button></div>` });
+    $('#phDel').onclick = async () => {
+      if (!confirm('Точно видалити це фото?')) return;
+      await DB.del(p.id); closeModal(); renderGallery(); toast('Фото видалено');
+    };
+  });
+}
+
+/* =====================================================================
+   Налаштування і резервна копія
+   ===================================================================== */
+function renderSettings() {
+  loadVoices();
+  const v = ukVoice();
+  $('#app').innerHTML = `<div class="wrap">
+    <div class="hello"><div class="big">⚙️</div><div><h1>Налаштування</h1><p>Для дорослих: голос, анімація і резервна копія.</p></div></div>
+    <div class="box"><h2>🔊 Голос</h2>
+      <p>${v ? `Український голос знайдено: <b>${esc(v.name)}</b>.` : 'Український голос на цьому пристрої не знайдено.'}</p>
+      <p class="note">Щоб додати голос на iPad: Параметри → Спеціальні можливості → Промовлений вміст → Голоси → Українська (англійською: Settings → Accessibility → Spoken Content → Voices → Ukrainian). Після завантаження перезапустіть сайт.</p>
+      <label class="chk"><input type="checkbox" id="sVoice" ${prefs.autoVoice ? 'checked' : ''}> Читати кожен крок уголос автоматично</label>
+      <div class="row"><button class="btn" id="sTest">▶ Перевірити голос</button></div></div>
+    <div class="box"><h2>✏️ Анімація</h2>
+      <label class="chk"><input type="checkbox" id="sAnim" ${prefs.autoPlay ? 'checked' : ''}> Показувати, як малювати, при переході на наступний крок</label></div>
+    <div class="box"><h2>🧠 Перевірка пам’яті</h2>
+      <p>${storageWorks ? `Пам’ять браузера працює. Сайт пам’ятає цей пристрій з <b>${fmtDate(firstRun)}</b>.` : '<b>Пам’ять браузера недоступна</b> — прогрес і фото не збережуться.'}</p>
+      <p class="note">Як перевірити: закрийте сайт, відкрийте знову наступного дня і загляньте сюди. Якщо дата щоразу сьогоднішня — цей спосіб відкриття не зберігає прогрес.</p></div>
+    <div class="box"><h2>💾 Резервна копія</h2>
+      <p>Прогрес і фото зберігаються тільки в цьому браузері на цьому пристрої. Якщо очистити дані Safari або відкрити сайт з іншого місця — вони зникнуть. Час від часу зберігайте копію у файл.</p>
+      ${store.ok ? '' : '<p><b>Увага:</b> браузер зараз не дозволяє зберігати прогрес.</p>'}
+      <div class="row"><button class="btn primary" id="sExport">⬇️ Зберегти копію у файл</button><button class="btn" id="sImport">⬆️ Відновити з файлу</button></div></div>
+    <div class="box"><h2>🧹 Почати заново</h2>
+      <p class="note">Скидає зірочки й кроки. Фото в галереї залишаться.</p>
+      <div class="row"><button class="btn" id="sReset">Скинути прогрес</button></div></div>
+  </div>`;
+  $('#sVoice').onchange = e => { prefs.autoVoice = e.target.checked; savePrefs(); };
+  $('#sAnim').onchange = e => { prefs.autoPlay = e.target.checked; savePrefs(); };
+  $('#sTest').onclick = () => speak('Привіт! Я буду читати тобі кроки. Бери олівець — і почнемо малювати.');
+  $('#sExport').onclick = exportData;
+  $('#sImport').onclick = () => { $('#importInput').value = ''; $('#importInput').click(); };
+  $('#sReset').onclick = () => {
+    if (!confirm('Скинути всі зірочки й кроки?')) return;
+    progress = { done: {}, pos: {} }; saveProgress(); toast('Прогрес скинуто');
+  };
+}
+
+async function exportData() {
+  let photos = [];
+  try { photos = await DB.all(); } catch (e) {}
+  const data = { app: 'malyuyu-olivtsem', v: 1, date: new Date().toISOString(), prefs, progress, photos };
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'malyuyu-olivtsem-' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+}
+
+$('#importInput').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  const fr = new FileReader();
+  fr.onload = async () => {
+    try {
+      const d = JSON.parse(fr.result);
+      if (d.app !== 'malyuyu-olivtsem') throw new Error('bad');
+      prefs = Object.assign(prefs, d.prefs || {}); savePrefs();
+      progress = Object.assign({ done: {}, pos: {} }, d.progress || {}); saveProgress();
+      let n = 0;
+      for (const p of (d.photos || [])) { try { await DB.put(p); n++; } catch (err) {} }
+      toast(`Відновлено! Фото: ${n}`);
+      renderSettings();
+    } catch (err) { toast('Це не схожий файл резервної копії'); }
+  };
+  fr.readAsText(f);
+});
+
+/* =====================================================================
+   Навігація
+   ===================================================================== */
+function route() {
+  stopVoice(); clearTimeout(playTimer); closeModal();
+  const [page, arg] = location.hash.replace(/^#\/?/, '').split('/');
+  if (page === 'lesson' && getLesson(arg)) renderLesson(arg);
+  else if (page === 'gallery') renderGallery();
+  else if (page === 'settings') renderSettings();
+  else renderHome();
+  document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('on', a.dataset.nav === (page === 'lesson' ? '' : (page || ''))));
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+document.addEventListener('keydown', e => {
+  if (!cur || !location.hash.startsWith('#/lesson') || !$('#modal').hidden) return;
+  if (e.key === 'ArrowRight') go(cur.step + 1);
+  if (e.key === 'ArrowLeft') go(cur.step - 1);
+});
+route();
+</script>
+</body>
+</html>
